@@ -1,5 +1,5 @@
 #labels Phase-Requirements
-== Policies ==
+== LRA Policies ==
 
   * LRA development follows agile principle. So requirements, inputs, ideas will be taken from various resources and considered for further development of LRA. At the same time releases will run parallel with immediate goals.
   * Milestone & Goals will be set/reset to achieve immediate results.
@@ -13,4 +13,3 @@
   * Documentation styles are not specify and strictly followed for current development. But upto certain limit it has been handled.
   * LRA project core friends. Decides/Finalize all idea regarding LRA.
   * All above points subject to change.
-
