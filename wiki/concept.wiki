@@ -1,4 +1,0 @@
-= Concept =
-
-Driving Maya's *render.exe* and *mayabatch.exe* thats the whole concept.
-With the help of Python's PyQt UI Framework a visual Interface which allows user to interact more with render.exe and mayabatch.exe
