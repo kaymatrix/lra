@@ -1,6 +1,6 @@
 #labels Featured
 == What is LRA? ==
-LRA - Local Render Assitant is a simplest form of local rendering support tool for 3D people. LRAs aim is to be very simple and support maya based rendering with local machines. 
+Local Render Assitant (lra in short) is a simplest form of local rendering support tool for 3D people. LRAs aim is to be very simple and support maya rendering with local machines. 
 
 == Why LRA? ==
 It's common among lot of small and moderate animation studios to use local desktop machines for their final renders. Not all studios can offer a costly render-farm hardware and its management tool. So their cost effective solution is to run local batch render. And LRA is to handle these processes.
