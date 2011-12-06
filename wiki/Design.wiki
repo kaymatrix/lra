@@ -1,8 +1,13 @@
 #labels Phase-Design
-= LRA Design and Concpet =
+= LRA Design and Concept =
 
 ------
 * Screens * 
 
 <a href="https://picasaweb.google.com/kaymatrix/LraDesignsIdeasUIs?authuser=0&feat=embedwebsite">
 <img src="https://lh3.googleusercontent.com/-AdAa1_br5lM/Ttw3dTPiZbE/AAAAAAAAESc/AizB5lOqJnc/s160-c/LraDesignsIdeasUIs.jpg" width="160" height="160" style="margin:1px 0 0 4px;">
+
+  *===*Basic/Core Concepts*===
+    * Complete render support
+    * Enduser of zero technical knowledge should be able to work
+    * Automate all possible task
