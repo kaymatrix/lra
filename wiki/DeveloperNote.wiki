@@ -11,4 +11,4 @@ Following are important infos for all lra developers and code users.
 
 === Other Dependency ===
 
-  * lra depends on opl library. its another project by me for sharing common library among various projects. it has been hosted in google code [http://code.google.com/p/our-py-lib/] check here. 
+  * lra depends on opl library. its another project by me for sharing common library among various projects. it has been hosted in google code [http://code.google.com/p/our-py-lib/]. Developers are requested to checkout these dependency and make use of it.
