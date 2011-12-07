@@ -1,0 +1,18 @@
+#labels Phase-Deploy
+= Release Plan =
+
+Here listing the TODOs, Major Bug fixes & features that are to be done for upcoming release. (Minor bug fixes are not included in this list)
+And also estimating approx deadline for the next release.
+
+|| *Next Release* || Dec End 2011 End ||
+
+= Expected Immediate TODOs for the next release=
+
+  * Basic GUI
+  * Drag & Drop files
+  * Settings Screen for basic ini setting
+  * Basic Testing 
+  * Package/Delivery system
+  * Update intimating system
+
+ 
