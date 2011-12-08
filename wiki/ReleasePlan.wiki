@@ -1,4 +1,4 @@
-#labels Phase-Deploy
+#labels Phase-Deploy,ForDevelopers
 = Release Plan =
 
 Here listing the TODOs, Major Bug fixes & features that are to be done for upcoming release. (Minor bug fixes are not included in this list)
