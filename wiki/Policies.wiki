@@ -1,4 +1,4 @@
-#labels Phase-Requirements
+#labels Phase-Requirements,ForDevelopers
 == LRA Policies ==
 
   * LRA development follows agile principle. So requirements, inputs, ideas will be taken from various resources and considered for further development of LRA. At the same time releases will run parallel with immediate goals.
