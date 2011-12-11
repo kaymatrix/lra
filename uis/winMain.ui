@@ -290,8 +290,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>96</width>
-          <height>26</height>
+          <width>66</width>
+          <height>219</height>
          </rect>
         </property>
         <attribute name="label">
@@ -468,17 +468,7 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Started Rendering...&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;ABCD_XYZ_KLMN_OPQR_1234_5678_A_B_C_D1_D2_D3.mb&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Warning!&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;abc texture missing...!&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Warning!&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;zxczxc abc texture missing...!&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Warning!&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;zczxczxcabc texture missing...!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -936,194 +926,6 @@ p, li { white-space: pre-wrap; }
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
-          <row>
-           <property name="text">
-            <string>New Row</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>New Row</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>New Row</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>New Row</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>New Row</string>
-           </property>
-          </row>
-          <row>
-           <property name="text">
-            <string>New Row</string>
-           </property>
-          </row>
-          <column>
-           <property name="text">
-            <string/>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string/>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>FileName</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>ProjPath</string>
-           </property>
-          </column>
-          <item row="0" column="0">
-           <property name="text">
-            <string>InProcess</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0416/icons/04/16/06.png</normaloff>:/ic0416/icons/04/16/06.png</iconset>
-           </property>
-          </item>
-          <item row="0" column="1">
-           <property name="text">
-            <string>Rendering</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0316/icons/03/16/31.png</normaloff>:/ic0316/icons/03/16/31.png</iconset>
-           </property>
-          </item>
-          <item row="0" column="2">
-           <property name="text">
-            <string>ABCD_XYZ_KLMN_OPQR_1234_5678_A_B_C_D1_D2_D3.mb</string>
-           </property>
-          </item>
-          <item row="1" column="0">
-           <property name="text">
-            <string>Waiting</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0416/icons/04/16/10.png</normaloff>:/ic0416/icons/04/16/10.png</iconset>
-           </property>
-          </item>
-          <item row="1" column="1">
-           <property name="text">
-            <string>Waiting</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0216/icons/02/16/37.png</normaloff>:/ic0216/icons/02/16/37.png</iconset>
-           </property>
-          </item>
-          <item row="1" column="2">
-           <property name="text">
-            <string>ABCD_XYZ_KLMN_OPQR_1234_5678_A_B_C_D1_D2_D3.mb</string>
-           </property>
-          </item>
-          <item row="2" column="0">
-           <property name="text">
-            <string>No Error!</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0416/icons/04/16/02.png</normaloff>:/ic0416/icons/04/16/02.png</iconset>
-           </property>
-          </item>
-          <item row="2" column="1">
-           <property name="text">
-            <string>Done</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0316/icons/03/16/02.png</normaloff>:/ic0316/icons/03/16/02.png</iconset>
-           </property>
-          </item>
-          <item row="2" column="2">
-           <property name="text">
-            <string>ABCD_XYZ_KLMN_OPQR_1234_5678_A_B_C_D1_D2_D3.mb</string>
-           </property>
-          </item>
-          <item row="3" column="0">
-           <property name="text">
-            <string>Waiting</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0416/icons/04/16/10.png</normaloff>:/ic0416/icons/04/16/10.png</iconset>
-           </property>
-          </item>
-          <item row="3" column="1">
-           <property name="text">
-            <string>Waiting</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0216/icons/02/16/37.png</normaloff>:/ic0216/icons/02/16/37.png</iconset>
-           </property>
-          </item>
-          <item row="3" column="2">
-           <property name="text">
-            <string>ABCD_XYZ_KLMN_OPQR_1234_5678_A_B_C_D1_D2_D3.mb</string>
-           </property>
-          </item>
-          <item row="4" column="0">
-           <property name="text">
-            <string>Error!</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0416/icons/04/16/01.png</normaloff>:/ic0416/icons/04/16/01.png</iconset>
-           </property>
-          </item>
-          <item row="4" column="1">
-           <property name="text">
-            <string>Done</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0316/icons/03/16/02.png</normaloff>:/ic0316/icons/03/16/02.png</iconset>
-           </property>
-          </item>
-          <item row="4" column="2">
-           <property name="text">
-            <string>ABCD_XYZ_KLMN_OPQR_1234_5678_A_B_C_D1_D2_D3.mb</string>
-           </property>
-          </item>
-          <item row="5" column="0">
-           <property name="text">
-            <string>Error!</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0416/icons/04/16/01.png</normaloff>:/ic0416/icons/04/16/01.png</iconset>
-           </property>
-          </item>
-          <item row="5" column="1">
-           <property name="text">
-            <string>Done</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../res/imgs.qrc">
-             <normaloff>:/ic0316/icons/03/16/02.png</normaloff>:/ic0316/icons/03/16/02.png</iconset>
-           </property>
-          </item>
-          <item row="5" column="2">
-           <property name="text">
-            <string>ABCD_XYZ_KLMN_OPQR_1234_5678_A_B_C_D1_D2_D3.mb</string>
-           </property>
-          </item>
          </widget>
         </item>
        </layout>
