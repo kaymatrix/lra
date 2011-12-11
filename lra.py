@@ -36,36 +36,36 @@ if __name__ == '__main__':
 
 ####Module Pack folders that will be added to sys search path####
     modulePathList = [
-                      parentFolder2 + '\lra\trunk',
-                      parentFolder2 + '\lra\trunk\lib',
-                      parentFolder2 + '\lra\trunk\uis',
-                      parentFolder2 + '\opl',
+                      parentFolder1 + '/lra',
+                      parentFolder1 + '/lra/lib',
+                      parentFolder1 + '/lra/uis',
+                      parentFolder1 + '/lra/res',
+                      parentFolder1 + '/opl',
                       ##'F:\PYTHON\LIB',
                      ]
 
     for modulePath in modulePathList:
-        if modulePath not in sys.path:
+        if os.path.abspath(modulePath) not in sys.path:
             if os.path.exists(modulePath):
-                sys.path.append(modulePath)
-
+                sys.path.append(os.path.abspath(modulePath))
 
 from PyQt4 import QtCore, QtGui
-from MainUI import Ui_Dialog
+from winMain_Interface import *
 
-
-class MainApplication(QtGui.QMainWindow, Ui_Dialog):
-
+class AppStart():
 
     def __init__(self):
-        QtGui.QMainWindow.__init__(self)
-        self.setupUi(self)
-
+        self.ui = winInterfaceMain()
+        self.ui.show()
 
 if '__main__' == __name__:
-    #import iniConfigReadWrite as ini
+    try:
+        del(app)
+    except:
+        pass
+
     app = QtGui.QApplication(sys.argv)
-    ui = MainApplication()
-    ui.show()
-    z = app.exec_()
+    ui = AppStart()
+    ec = app.exec_()
     del(app)
-    sys.exit(z)
+    sys.exit(ec)
