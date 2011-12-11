@@ -290,8 +290,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>180</width>
-          <height>259</height>
+          <width>96</width>
+          <height>26</height>
          </rect>
         </property>
         <attribute name="label">
@@ -303,8 +303,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>180</width>
-          <height>259</height>
+          <width>66</width>
+          <height>219</height>
          </rect>
         </property>
         <attribute name="label">
@@ -516,8 +516,8 @@ p, li { white-space: pre-wrap; }
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>259</width>
-          <height>313</height>
+          <width>224</width>
+          <height>301</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_19">
