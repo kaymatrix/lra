@@ -10,11 +10,19 @@ class winInterfaceMain(QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
 
-if '__main__' == __name__:
-    #import iniConfigReadWrite as ini
-    app = QtGui.QApplication(sys.argv)
-    ui = winInterfaceMain()
-    ui.show()
-    z = app.exec_()
-    del(app)
-    sys.exit(z)
+
+
+
+
+
+
+
+
+##if '__main__' == __name__:
+##    #import iniConfigReadWrite as ini
+##    app = QtGui.QApplication(sys.argv)
+##    ui = winInterfaceMain()
+##    ui.show()
+##    z = app.exec_()
+##    del(app)
+##    sys.exit(z)
