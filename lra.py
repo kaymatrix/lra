@@ -49,23 +49,93 @@ if __name__ == '__main__':
             if os.path.exists(modulePath):
                 sys.path.append(os.path.abspath(modulePath))
 
+#Main Modules
 from PyQt4 import QtCore, QtGui
-from winMain_Interface import *
+import sip
 
-class AppStart():
+#Custom Modules
+from winMain import Ui_MainWindow
+import oplQtSupport
+import oplQtConnection
+import oplQtTable
+import clsIcons
+
+class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
     def __init__(self):
-        self.ui = winInterfaceMain()
-        self.ui.show()
+        QtGui.QMainWindow.__init__(self)
+        self.setupUi(self)
+
+        #Defaults
+        self.appName = "Render Assistant"
+        self.iconPath = r"F:\Kumaresan\Dev\Python\lra\res\icons"
+
+        #Initializes Variables/Objects
+        self.qsup = oplQtSupport.oplQtSupport(self,self.iconPath)
+        self.qcon = oplQtConnection.oplQtConnection(self)
+        self.qtbl = oplQtTable.oplQtTable(self)
+        self.icon = clsIcons.Icons(self.iconPath)
+
+        #Initial Setups
+        self.doConnections()
+        self.doUIReDesigns()
+
+    def doUIReDesigns(self):
+        self.setWindowTitle(self.appName)
+        self.qsup.setIcon(self,self.icon.star)
+        self.qsup.setIcon(self.btnStartRender, self.icon.info)
+        self.qtbl.initializing(self.tblMainList,["FileName"])
+        self.qtbl.formatting(self.tblMainList)
+
+        #Load Layout
+        self.qsup.uiLayoutRestore()
+
+    def doConnections(self):
+        #Default Connections
+        QtCore.QObject.connect(self.btnStartRender, QtCore.SIGNAL("clicked()"), self.btnActions)
+
+        #Custom Connections
+        self.qcon.connectToDragDropEx(self.tblMainList,self.tblDragDrop)
+        self.qcon.connectToClose(self,self.doOnClose)
+
+    def btnActions(self, *arg):
+        pass
+
+    def tblDragDrop(self, event):
+        files = self.qcon.dropEventInfoEx(event)
+        for eachFile in files:
+            self.qtbl.addRow(self.tblMainList,[eachFile],1)
+
+    def doOnClose(self, *eve):
+        self.qsup.uiLayoutSave()
+
+
+
+
+
 
 if '__main__' == __name__:
     try:
-        del(app)
+        sip.delete(app)
     except:
-        pass
+        try:
+            del(app)
+        except:
+            pass
+
+    inst = QtGui.QApplication.instance()
+    if inst:
+        inst.exit()
+        inst.quit()
+        del(inst)
 
     app = QtGui.QApplication(sys.argv)
     ui = AppStart()
+    ui.show()
     ec = app.exec_()
+    app.closeAllWindows()
+    app.exit()
+    app.quit()
+    del(ui)
     del(app)
     sys.exit(ec)
