@@ -58,7 +58,9 @@ from winMain import Ui_MainWindow
 import oplQtSupport
 import oplQtConnection
 import oplQtTable
-import clsIcons
+import mIcons
+import mSettings
+
 
 class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
@@ -66,24 +68,26 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         QtGui.QMainWindow.__init__(self)
         self.setupUi(self)
 
-        #Defaults
-        self.appName = "Render Assistant"
-        self.iconPath = r"F:\Kumaresan\Dev\Python\lra\res\icons"
+        #Defaults - Setup 1
+        self.mlistColumns = [""]
 
         #Initializes Variables/Objects
-        self.qsup = oplQtSupport.oplQtSupport(self,self.iconPath)
+        self.mApp = mSettings.Configs()
+        self.mIcon = mIcons.Configs()
+        self.qsup = oplQtSupport.oplQtSupport(self,self.mApp.iconPath)
         self.qcon = oplQtConnection.oplQtConnection(self)
         self.qtbl = oplQtTable.oplQtTable(self)
-        self.icon = clsIcons.Icons(self.iconPath)
+
+        #Defaults - Setup 2
 
         #Initial Setups
         self.doConnections()
         self.doUIReDesigns()
 
     def doUIReDesigns(self):
-        self.setWindowTitle(self.appName)
-        self.qsup.setIcon(self,self.icon.star)
-        self.qsup.setIcon(self.btnStartRender, self.icon.info)
+        self.setWindowTitle(self.mApp.name)
+        self.qsup.setIcon(self,self.mIcon.star)
+        self.qsup.setIcon(self.btnStartRender, self.mIcon.info)
         self.qtbl.initializing(self.tblMainList,["FileName"])
         self.qtbl.formatting(self.tblMainList)
 
@@ -108,6 +112,8 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
     def doOnClose(self, *eve):
         self.qsup.uiLayoutSave()
+        self.mApp.saveSettings()
+        self.mIcon.saveSettings()
 
 
 
