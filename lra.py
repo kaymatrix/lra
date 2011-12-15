@@ -60,7 +60,7 @@ import oplQtConnection
 import oplQtTable
 import mIcons
 import mSettings
-
+import mRenderTask
 
 class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
@@ -69,7 +69,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         #Defaults - Setup 1
-        self.mlistColumns = [""]
+        self.rtaskCols = ['Status','Name','AddedOn']
 
         #Initializes Variables/Objects
         self.mApp = mSettings.Configs()
@@ -77,6 +77,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup = oplQtSupport.oplQtSupport(self,self.mApp.iconPath)
         self.qcon = oplQtConnection.oplQtConnection(self)
         self.qtbl = oplQtTable.oplQtTable(self)
+        self.rtaskSupport=mRenderTask.RenderTaskSupport(self.mIcon)
 
         #Defaults - Setup 2
 
@@ -86,37 +87,62 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
     def doUIReDesigns(self):
         self.setWindowTitle(self.mApp.name)
+
         self.qsup.setIcon(self,self.mIcon.star)
-        self.qsup.setIcon(self.btnStartRender, self.mIcon.info)
-        self.qtbl.initializing(self.tblMainList,["FileName"])
-        self.qtbl.formatting(self.tblMainList)
+        self.qsup.setIcon(self.btnStartRender, self.mIcon.home)
+        self.qsup.setIcon(self.btnPropApply, self.mIcon.apply)
+        self.qsup.setIcon(self.actionProperties, self.mIcon.female)
+        self.qsup.setIcon(self.actionRenderTasks, self.mIcon.heart)
+
+        self.qtbl.initializing(self.tblMainList,self.rtaskCols)
+        self.qtbl.formatting(self.tblMainList,sortingEnabled=True)
+
+        #Inital Settings 1
+        self.actionProperties.setChecked(False)
 
         #Load Layout
         self.qsup.uiLayoutRestore()
 
     def doConnections(self):
         #Default Connections
-        QtCore.QObject.connect(self.btnStartRender, QtCore.SIGNAL("clicked()"), self.btnActions)
+        QtCore.QObject.connect(self.btnStartRender, QtCore.SIGNAL("clicked()"), self.sigBtnActions)
+        QtCore.QObject.connect(self.tblMainList, QtCore.SIGNAL("itemClicked(QTableWidgetItem*)"), self.sigTblActions)
 
         #Custom Connections
-        self.qcon.connectToDragDropEx(self.tblMainList,self.tblDragDrop)
-        self.qcon.connectToClose(self,self.doOnClose)
+        self.qcon.connectToDragDropEx(self.tblMainList,self.sigTblDragDrop)
+        self.qcon.connectToClose(self,self.sigWinClose)
 
-    def btnActions(self, *arg):
+    def sigTblActions(self, *arg):
+        rows = self.qtbl.getSelectedRowNo(self.tblMainList)
+        if rows:
+            row = rows[0]
+            items = self.qtbl.getRowItems(self.tblMainList,row)
+            print items
+
+    def sigBtnActions(self, *arg):
         pass
 
-    def tblDragDrop(self, event):
-        files = self.qcon.dropEventInfoEx(event)
-        for eachFile in files:
-            self.qtbl.addRow(self.tblMainList,[eachFile],1)
-
-    def doOnClose(self, *eve):
+    def sigWinClose(self, *arg):
         self.qsup.uiLayoutSave()
         self.mApp.saveSettings()
         self.mIcon.saveSettings()
 
+    def sigTblDragDrop(self, *arg):
+        files = self.qcon.dropEventInfoEx(arg[0])
+        for eachFile in files:
+            self.doAddNewRTask(eachFile)
 
-
+    def doAddNewRTask(self, file):
+        rtask = mRenderTask.RenderTask(file)
+        rowItems = self.qtbl.addRow(self.tblMainList,['',rtask.fileName,rtask.addedOn],1)
+        if rowItems[0]:
+            item = rowItems[0]
+            icon = self.rtaskSupport.getIconForStatus(rtask.status)
+            status = self.rtaskSupport.getStatusNameForStatus(rtask.status)
+            self.qtbl.setTag(item,'tag',rtask)
+            self.qsup.setIcon(item,icon)
+            item.setText(status)
+        self.qtbl.resizeColumnsEx(self.tblMainList)
 
 
 

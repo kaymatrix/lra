@@ -16,6 +16,7 @@ import oplPyUtilities
 class Icons():
 
     def __init__(self):
+        self.noIcon="/04/16/21.png"
         self.male = "/01/16/07.png"
         self.female = "/01/16/10.png"
         self.star = "/01/16/31.png"
@@ -28,9 +29,20 @@ class Icons():
         self.pencil = "/01/16/19.png"
         self.puzzle = "/02/16/19.png"
         self.clock = "/02/16/02.png"
+        self.apply = "/02/16/02.png"
         self.filter = "/02/16/04.png"
         self.spaner = "/02/16/36.png"
         self.floppy = "/02/16/45.png"
+        self.circleRed = "/04/16/01.png"
+        self.circleGreen = "/04/16/02.png"
+        self.circleBlue = "/04/16/03.png"
+        self.circleYellow = "/04/16/04.png"
+        self.circlePinkRed = "/04/16/05.png"
+        self.circleOrange = "/04/16/06.png"
+        self.circlePink = "/04/16/07.png"
+        self.circleBlack = "/04/16/08.png"
+        self.circleGray = "/04/16/09.png"
+        self.circleWhite = "/04/16/10.png"
 
 class Configs(Icons):
     def __init__(self, file="icons.ini", autoLoad=True):
