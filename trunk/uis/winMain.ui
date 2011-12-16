@@ -20,7 +20,7 @@
    <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_8">
+   <layout class="QGridLayout" name="gridLayout_14">
     <item row="0" column="0">
      <widget class="QGroupBox" name="groupBox">
       <property name="title">
@@ -256,6 +256,7 @@
    </attribute>
    <addaction name="actionRenderTasks"/>
    <addaction name="actionProperties"/>
+   <addaction name="actionColumns"/>
   </widget>
   <widget class="QDockWidget" name="dckProperties">
    <property name="windowTitle">
@@ -293,7 +294,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>0</y>
+          <y>-186</y>
           <width>243</width>
           <height>348</height>
          </rect>
@@ -468,6 +469,34 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="dckColumns">
+   <property name="windowTitle">
+    <string>Customize Columns</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <layout class="QGridLayout" name="gridLayout_8">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QListWidget" name="lstColumns">
+       <property name="frameShape">
+        <enum>QFrame::Panel</enum>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <action name="actionRenderTasks">
    <property name="checkable">
     <bool>true</bool>
@@ -494,6 +523,20 @@
    </property>
    <property name="toolTip">
     <string>Show/Hide Properties</string>
+   </property>
+  </action>
+  <action name="actionColumns">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Columns</string>
+   </property>
+   <property name="toolTip">
+    <string>Show/Hide Columns to display in render task table</string>
    </property>
   </action>
  </widget>
@@ -556,6 +599,38 @@
     <hint type="sourcelabel">
      <x>130</x>
      <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionColumns</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dckColumns</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>397</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dckColumns</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>actionColumns</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>397</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

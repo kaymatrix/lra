@@ -17,6 +17,3 @@ RenderedWithNoError=3
 RenderedWithError=4
 RenderCancelled=5
 FileMissing=6
-
-def functiond():
-    print "FD"

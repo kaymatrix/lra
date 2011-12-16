@@ -22,7 +22,7 @@ class Icons():
         self.star = "/01/16/31.png"
         self.heart = "/01/16/33.png"
         self.search = "/01/16/49.png"
-        self.info = "/01/16/50.png"
+        self.info = "/01/16/02.png"
         self.settings = "/01/16/41.png"
         self.home = "/01/16/45.png"
         self.folder = "/01/16/46.png"

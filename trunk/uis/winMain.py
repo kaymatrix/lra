@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'F:\Kumaresan\Dev\Python\lra\uis\winMain.ui'
 #
-# Created: Thu Dec 15 11:01:41 2011
+# Created: Fri Dec 16 08:47:12 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -22,8 +22,8 @@ class Ui_MainWindow(object):
         MainWindow.setDockNestingEnabled(True)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
-        self.gridLayout_8 = QtGui.QGridLayout(self.centralwidget)
-        self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
+        self.gridLayout_14 = QtGui.QGridLayout(self.centralwidget)
+        self.gridLayout_14.setObjectName(_fromUtf8("gridLayout_14"))
         self.groupBox = QtGui.QGroupBox(self.centralwidget)
         self.groupBox.setTitle(_fromUtf8(""))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.textBrowser.setObjectName(_fromUtf8("textBrowser"))
         self.gridLayout_5.addWidget(self.textBrowser, 0, 0, 1, 1)
         self.gridLayout_6.addWidget(self.frame_4, 1, 0, 1, 1)
-        self.gridLayout_8.addWidget(self.groupBox, 0, 0, 1, 1)
+        self.gridLayout_14.addWidget(self.groupBox, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 714, 18))
@@ -225,6 +225,21 @@ class Ui_MainWindow(object):
         self.gridLayout_7.addWidget(self.scrollArea, 0, 0, 1, 1)
         self.dckProperties.setWidget(self.dockWidgetContents_2)
         MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dckProperties)
+        self.dckColumns = QtGui.QDockWidget(MainWindow)
+        self.dckColumns.setObjectName(_fromUtf8("dckColumns"))
+        self.dockWidgetContents_3 = QtGui.QWidget()
+        self.dockWidgetContents_3.setObjectName(_fromUtf8("dockWidgetContents_3"))
+        self.gridLayout_8 = QtGui.QGridLayout(self.dockWidgetContents_3)
+        self.gridLayout_8.setMargin(0)
+        self.gridLayout_8.setSpacing(0)
+        self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
+        self.lstColumns = QtGui.QListWidget(self.dockWidgetContents_3)
+        self.lstColumns.setFrameShape(QtGui.QFrame.Panel)
+        self.lstColumns.setAlternatingRowColors(True)
+        self.lstColumns.setObjectName(_fromUtf8("lstColumns"))
+        self.gridLayout_8.addWidget(self.lstColumns, 0, 0, 1, 1)
+        self.dckColumns.setWidget(self.dockWidgetContents_3)
+        MainWindow.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.dckColumns)
         self.actionRenderTasks = QtGui.QAction(MainWindow)
         self.actionRenderTasks.setCheckable(True)
         self.actionRenderTasks.setChecked(True)
@@ -233,13 +248,21 @@ class Ui_MainWindow(object):
         self.actionProperties.setCheckable(True)
         self.actionProperties.setChecked(True)
         self.actionProperties.setObjectName(_fromUtf8("actionProperties"))
+        self.actionColumns = QtGui.QAction(MainWindow)
+        self.actionColumns.setCheckable(True)
+        self.actionColumns.setChecked(True)
+        self.actionColumns.setObjectName(_fromUtf8("actionColumns"))
         self.toolBar.addAction(self.actionRenderTasks)
         self.toolBar.addAction(self.actionProperties)
+        self.toolBar.addAction(self.actionColumns)
 
         self.retranslateUi(MainWindow)
         QtCore.QObject.connect(self.actionProperties, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.dckProperties.setVisible)
         QtCore.QObject.connect(self.actionRenderTasks, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.dckRenderTasks.setVisible)
         QtCore.QObject.connect(self.dckProperties, QtCore.SIGNAL(_fromUtf8("visibilityChanged(bool)")), self.actionProperties.setChecked)
+        QtCore.QObject.connect(self.dckRenderTasks, QtCore.SIGNAL(_fromUtf8("visibilityChanged(bool)")), self.actionRenderTasks.setChecked)
+        QtCore.QObject.connect(self.actionColumns, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.dckColumns.setVisible)
+        QtCore.QObject.connect(self.dckColumns, QtCore.SIGNAL(_fromUtf8("visibilityChanged(bool)")), self.actionColumns.setChecked)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -260,8 +283,11 @@ class Ui_MainWindow(object):
         self.label_3.setText(QtGui.QApplication.translate("MainWindow", "Start Frame:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("MainWindow", "End Frame:", None, QtGui.QApplication.UnicodeUTF8))
         self.frmPropOutputPath.setTitle(QtGui.QApplication.translate("MainWindow", "Output Path:", None, QtGui.QApplication.UnicodeUTF8))
+        self.dckColumns.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Customize Columns", None, QtGui.QApplication.UnicodeUTF8))
         self.actionRenderTasks.setText(QtGui.QApplication.translate("MainWindow", "Render Tasks", None, QtGui.QApplication.UnicodeUTF8))
         self.actionRenderTasks.setToolTip(QtGui.QApplication.translate("MainWindow", "Show/Hide Render Tasks", None, QtGui.QApplication.UnicodeUTF8))
         self.actionProperties.setText(QtGui.QApplication.translate("MainWindow", "Properties", None, QtGui.QApplication.UnicodeUTF8))
         self.actionProperties.setToolTip(QtGui.QApplication.translate("MainWindow", "Show/Hide Properties", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionColumns.setText(QtGui.QApplication.translate("MainWindow", "Columns", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionColumns.setToolTip(QtGui.QApplication.translate("MainWindow", "Show/Hide Columns to display in render task table", None, QtGui.QApplication.UnicodeUTF8))
 
