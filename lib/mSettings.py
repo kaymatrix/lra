@@ -17,6 +17,7 @@ class settings():
     def __init__(self):
         self.name="Render Assistant"
         self.iconPath="F:/Kumaresan/Dev/Python/lra/res/icons"
+        self.rtcounter=0
 
 
 class Configs(settings):
@@ -45,5 +46,5 @@ if '__main__' == __name__:
     cfg = Configs()
     #cfg.appName="newName"
     #cfg.saveSettings()
-    print cfg.bos
+    print cfg.saveSettings()
 

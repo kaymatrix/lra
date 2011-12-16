@@ -29,6 +29,7 @@ class RenderTask():
 
     def __init__(self, file=''):
         self._muti=oplPyUtilities.oplPyUtilities()
+        self.ads=""
         if file and os.path.exists(file):
             self.fileName=os.path.basename(file)
             self.filePath=os.path.dirname(file)
@@ -47,9 +48,27 @@ class RenderTaskSupport():
     def __init__(self, iconsObj):
         self.mIcon= mIcons.Configs() if not iconsObj else iconsObj
         self._muti=oplPyUtilities.oplPyUtilities()
+        self.rcnt=0
+
+    def rDisplayCols(self):
+        fixed = [
+                'ID',
+                'Status',
+                'File',
+                'Added On',
+                'Completed On'
+                ]
+        allCols = fixed + self.rFlags().keys()
+        return allCols
+
+    def rFlags(self):
+        return {
+                'Proj Path':'proj',
+                'Start Frame':'s',
+                'End Frame':'e'
+                }
 
     def getIconForStatus(self,status):
-
         if status==mrts.FileMissing:
             return self.mIcon.circleOrange
 
