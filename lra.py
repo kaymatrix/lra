@@ -79,16 +79,45 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qcon = oplQtConnection.oplQtConnection(self)
         self.qtbl = oplQtTable.oplQtTable(self)
         self.qlst = oplQtList.oplQtList(self)
-        self.rtaskSupport=mRenderTask.RenderTaskSupport(self.mIcon)
+        self.rtaskSupport=mRenderTask.RenderTaskSupport(self, self.mIcon)
         self.mData = mDatas.Datas(self)
 
+        #Initialize
+        self.initalize()
+
         #Defaults - Setup 2
-        self.rtaskCols = self.rtaskSupport.rDisplayCols()
+        self.rtaskCols = self.rtaskSupport.getFlagNamesAndFixedNames()
         self.rtaskSupport.rcnt = int(self.mApp.rtcounter)
 
         #Initial Setups
         self.doConnections()
         self.doUIReDesigns()
+
+    def initalize(self):
+        self.groupedWidgets = {
+                                self.frmPropFrameRange:[
+                                                        self.lePropStartFrame,
+                                                        self.lePropEndFrame
+                                                       ],
+                                self.frmPropProjPath:[
+                                                        self.lePropProjPath
+                                                     ]
+                              }
+        self.propWidgets = self.__allPropWidgets()
+        self.rtaskSupport.initalizeFlags(self.propWidgets)
+
+    def __allPropWidgets(self):
+        ret = []
+        for each in self.groupedWidgets.keys():
+            ret = ret + self.groupedWidgets[each]
+        return ret
+
+    def getFlagParentWidget(self, widget):
+        ret = None
+        for each in self.groupedWidgets.keys():
+            if widget in self.groupedWidgets[each]:
+                ret = each
+        return ret
 
     def doUIReDesigns(self):
         self.setWindowTitle(self.mApp.name)
@@ -114,37 +143,74 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         #Load Layout
         self.qsup.uiLayoutRestore()
 
-
     def doConnections(self):
-        #Default Connections
-        QtCore.QObject.connect(self.btnStartRender, QtCore.SIGNAL("clicked()"), self.sigBtnActions)
-        QtCore.QObject.connect(self.tblMainList, QtCore.SIGNAL("itemClicked(QTableWidgetItem*)"), self.sigTblActions)
-        QtCore.QObject.connect(self.lstColumns, QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.sigLstActions)
+        self.qcon.sigConnect(self.btnStartRender, "clicked()", self.sigBtnActions)
+        self.qcon.sigConnect(self.btnPropApply, "clicked()", self.sigBtnActions)
+        self.qcon.sigConnect(self.tblMainList, "clicked(QModelIndex)", self.sigTblActions)
+        self.qcon.sigConnect(self.lstColumns, "itemClicked(QListWidgetItem*)", self.sigLstActions)
 
-        #Custom Connections
+        self.qcon.sigConnect(self.actionRenderTasks, "toggled(bool)", self.sigToolBarAction)
+        self.qcon.sigConnect(self.actionProperties, "toggled(bool)", self.sigToolBarAction)
+        self.qcon.sigConnect(self.actionColumns, "toggled(bool)", self.sigToolBarAction)
+
+        self.qcon.sigConnect(self.dckRenderTasks, "visibilityChanged(bool)", self.sigDckVisibiltyChange)
+        self.qcon.sigConnect(self.dckProperties, "visibilityChanged(bool)", self.sigDckVisibiltyChange)
+        self.qcon.sigConnect(self.dckColumns, "visibilityChanged(bool)", self.sigDckVisibiltyChange)
+
         self.qcon.connectToDragDropEx(self.tblMainList,self.sigTblDragDrop)
         self.qcon.connectToKeyPress(self.tblMainList,self.sigTblKeyPress)
         self.qcon.connectToClose(self,self.sigWinClose)
 
+    def sigDckVisibiltyChange(self, *arg):
+        self.sigJammer(True)
+        self.actionColumns.setChecked(self.dckColumns.isVisible())
+        self.actionProperties.setChecked(self.dckProperties.isVisible())
+        self.actionRenderTasks.setChecked(self.dckRenderTasks.isVisible())
+        self.sigJammer(False)
+
+    def sigToolBarAction(self, *arg):
+        self.sigJammer(True)
+        sender = self.sender()
+        if sender == self.actionColumns:
+            self.dckColumns.setVisible(self.actionColumns.isChecked())
+        if sender == self.actionProperties:
+            self.dckProperties.setVisible(self.actionProperties.isChecked())
+        if sender == self.actionRenderTasks:
+            self.dckRenderTasks.setVisible(self.actionRenderTasks.isChecked())
+        self.sigJammer(False)
+
     def sigLstActions(self, *arg):
-        self.mData.doPrepareColumns()
+        self.sigJammer()
+        sender = self.sender()
+        if sender is self.lstColumns:
+            self.mData.doPrepareColumns()
+        self.sigJammer(False)
 
     def sigTblKeyPress(self, *arg):
+        self.sigJammer()
+        sender = self.sender()
         key = self.qcon.keyEventInfo(arg[0])
-        rows = self.qtbl.getSelectedRowNo(self.tblMainList)
-        if rows:
-            if key=="Delete":
-                for eachRow in rows: self.tblMainList.removeRow(eachRow)
+        if key=="Delete":
+            self.doRTaskDelete()
+        if key==16777237:
+            self.sigTblActions(None)
+        if key==16777235:
+            self.sigTblActions(None)
+        self.sigJammer(False)
 
     def sigTblActions(self, *arg):
-        rows = self.qtbl.getSelectedRowNo(self.tblMainList)
-        if rows:
-            row = rows[0]
-            items = self.qtbl.getRowItems(self.tblMainList,row)
-            rtask = self.qtbl.getTag(items[0])
+        self.sigJammer()
+        sender = self.sender()
+        if sender is self.tblMainList:
+            self.doRTaskSelected()
+        self.sigJammer(False)
 
     def sigBtnActions(self, *arg):
-        pass
+        self.sigJammer()
+        sender = self.sender()
+        if sender == self.btnPropApply:
+            self.doRTaskUpdate()
+        self.sigJammer(False)
 
     def sigWinClose(self, *arg):
         self.mApp.rtcounter=self.rtaskSupport.rcnt
@@ -155,9 +221,14 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
     def sigTblDragDrop(self, *arg):
         files = self.qcon.dropEventInfoEx(arg[0])
         for eachFile in files:
-            self.doAddNewRTask(eachFile)
+            self.doRTaskAdd(eachFile)
 
-    def doAddNewRTask(self, file):
+    def doRTaskSelected(self):
+        rtask = self._getSelectedRTask()
+        if rtask:
+            self.doRTaskFlagPopulate(rtask)
+
+    def doRTaskAdd(self, file):
         rt = mRenderTask.RenderTask(file)
         rtId = self.rtaskSupport.rcnt+1
         rtIcon = self.rtaskSupport.getIconForStatus(rt.status)
@@ -168,13 +239,102 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
                     rt.fileName,            #FILEPATH
                     rt.addedOn,             #ADDEDON
                     rt.completedOn,         #COMPLETEDON
-                  ]
+                  ] + self.rtaskSupport.emptyFlags()
         rowItems = self.qtbl.addRow(self.tblMainList,rowData,1)
         self.qtbl.setTag(rowItems[0],'tag',rt)
         self.qsup.setIcon(rowItems[1],rtIcon)
         rowItems[2].setToolTip(rt.filePath)
         self.qtbl.resizeColumnsEx(self.tblMainList)
         self.rtaskSupport.rcnt=rtId
+
+
+    def doRTaskUpdate(self):
+        rtask = self._getSelectedRTask()
+        rows = self.qtbl.getSelectedRowNo(self.tblMainList)
+
+        if rtask:
+            wdgts = self.__enabledFlags()
+
+            #Flags of RTASK Got updated.
+            self.rtaskSupport.rtaskUpdate(rtask, wdgts)
+            #Now to update the UI columns.
+
+            row = rows[0]
+            #Clear First
+            for widget in self.propWidgets:
+                flagFullName,flagShortName = self.rtaskSupport.getFlagInfoCore(widget)
+                col = self.qtbl.getHeaderColNo(self.tblMainList,flagFullName)
+                item = self.tblMainList.item(row,col)
+                if (item): item.setText('')
+
+            #Populate First
+            for eachFlag in rtask.flags:
+                columnName = eachFlag['flagFullName']
+                value = eachFlag['value']
+                col = self.qtbl.getHeaderColNo(self.tblMainList,columnName)
+                item = self.tblMainList.item(row,col)
+                if (item): item.setText(value)
+
+    def doRTaskFlagPopulate(self, rtask=None):
+        rt = mRenderTask.RenderTask('') if not rtask else rtask
+        self.lePropFileName.setText(rt.fileName)
+        self.lePropFilePath.setText(rt.filePath)
+
+        #Clear First
+        for eachWidget in self.propWidgets:
+            group = self.getFlagParentWidget(eachWidget)
+            group.setChecked(False)
+            self.qsup.setText(eachWidget,'')
+
+        #PopulateNext
+        for eachWidget in self.propWidgets:
+            for eachFlag in rt.flags:
+                flagFullName = eachFlag['flagFullName']
+                flagShortName = eachFlag['flagShortName']
+                value = eachFlag['value']
+                widget = eachFlag['widget']
+                if eachWidget == widget:
+                    group = self.getFlagParentWidget(widget)
+                    group.setChecked(True)
+                    self.qsup.setText(widget,value)
+
+    def doRTaskDelete(self):
+        rows = self.qtbl.getSelectedRowNo(self.tblMainList)
+        if rows:
+            for eachRow in rows: self.tblMainList.removeRow(eachRow)
+
+    def _getSelectedRTask(self, all=False):
+        rows = self.qtbl.getSelectedRowNo(self.tblMainList)
+        if rows:
+            if all:
+                ret = []
+                for eachRow in rows:
+                    items = self.qtbl.getRowItems(self.tblMainList, eachRow)
+                    rtask = self.qtbl.getTag(items[0])
+                    ret.append(rtask)
+            else:
+                ret = None
+                items = self.qtbl.getRowItems(self.tblMainList, rows[0])
+                ret = self.qtbl.getTag(items[0])
+
+        return ret
+
+
+    def __enabledFlags(self):
+        wdgts = []
+        for grp in self.groupedWidgets.keys():
+            if grp.isChecked():
+                for item in self.groupedWidgets[grp]:
+                    wdgts.append(item)
+        return wdgts
+
+    def sigJammer(self,jam=True):
+        self.dckRenderTasks.blockSignals(jam)
+        self.dckProperties.blockSignals(jam)
+        self.dckColumns.blockSignals(jam)
+        self.actionRenderTasks.blockSignals(jam)
+        self.actionProperties.blockSignals(jam)
+        self.actionColumns.blockSignals(jam)
 
 if '__main__' == __name__:
     try:

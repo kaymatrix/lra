@@ -29,7 +29,7 @@ class RenderTask():
 
     def __init__(self, file=''):
         self._muti=oplPyUtilities.oplPyUtilities()
-        self.ads=""
+
         if file and os.path.exists(file):
             self.fileName=os.path.basename(file)
             self.filePath=os.path.dirname(file)
@@ -43,14 +43,44 @@ class RenderTask():
 
         self.completedOn='-'
 
+        self.flags={}
+
+
 class RenderTaskSupport():
 
-    def __init__(self, iconsObj):
+    def __init__(self, parent, iconsObj):
         self.mIcon= mIcons.Configs() if not iconsObj else iconsObj
         self._muti=oplPyUtilities.oplPyUtilities()
         self.rcnt=0
+        self.rflags=[]
+        self.parent=parent
 
-    def rDisplayCols(self):
+    def initalizeFlags(self, propertyWidgets=[]):
+        for eachProp in propertyWidgets:
+            info = self.getFlagInfoCore(eachProp)
+            flagFullName = info[0]
+            flagShortName = info[1]
+            flag = (
+                    flagFullName,
+                    flagShortName,
+                    eachProp
+                   )
+            self.rflags.append(flag)
+
+    def emptyFlags(self):
+        #For componsating the column
+        ret = []
+        for flag in self.rflags:
+            ret.append("")
+        return ret
+
+    def getFlagNames(self):
+        lst=[]
+        for name in self.rflags:
+            lst.append(name[0])
+        return lst
+
+    def getFlagNamesAndFixedNames(self):
         fixed = [
                 'ID',
                 'Status',
@@ -58,15 +88,16 @@ class RenderTaskSupport():
                 'Added On',
                 'Completed On'
                 ]
-        allCols = fixed + self.rFlags().keys()
+        allCols = fixed + self.getFlagNames()
         return allCols
 
-    def rFlags(self):
-        return {
-                'Proj Path':'proj',
-                'Start Frame':'s',
-                'End Frame':'e'
-                }
+    def getFlagInfoCore(self, widget):
+        flagFullName = ""
+        flagShortName = ""
+        if widget and hasattr(widget,"property"):
+            flagFullName = str(widget.property("flagFullName").toString())
+            flagShortName = str(widget.property("flagShortName").toString())
+        return (flagFullName,flagShortName)
 
     def getIconForStatus(self,status):
         if status==mrts.FileMissing:
@@ -92,6 +123,27 @@ class RenderTaskSupport():
         for atr in atrs[0:len(atrs)-4]:
             if len(atr)==2 and atr[1]==status:
                 return atr[0]
+
+    def rtaskUpdate(self, rtask=None, activeWidgets=[]):
+        if rtask and activeWidgets:
+            rtask.flags = self.getFlagValues(activeWidgets)
+
+    def getFlagValues(self, widgets=[]):
+        res = []
+        for rflag in self.rflags:
+            if rflag[2] in widgets:
+                flagFullName = rflag[0]
+                flagShortName = rflag[1]
+                widget = rflag[2]
+                value = self.parent.qsup.getText(widget)
+                dt = {}
+                dt['flagFullName'] = flagFullName
+                dt['flagShortName'] = flagShortName
+                dt['value'] = value
+                dt['widget'] = widget
+                res.append(dt)
+        return res
+
 
 
 
