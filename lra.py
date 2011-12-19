@@ -122,12 +122,13 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
     def doUIReDesigns(self):
         self.setWindowTitle(self.mApp.name)
 
-        self.qsup.setIcon(self,self.mIcon.star)
-        self.qsup.setIcon(self.btnStartRender, self.mIcon.home)
+        self.qsup.setIcon(self,self.mIcon.app)
+        self.qsup.setIcon(self.btnStartRender, self.mIcon.startrender)
         self.qsup.setIcon(self.btnPropApply, self.mIcon.apply)
-        self.qsup.setIcon(self.actionProperties, self.mIcon.female)
-        self.qsup.setIcon(self.actionRenderTasks, self.mIcon.heart)
-        self.qsup.setIcon(self.actionColumns, self.mIcon.apply)
+        self.qsup.setIcon(self.actionProperties, self.mIcon.properties)
+        self.qsup.setIcon(self.actionRenderTasks, self.mIcon.rendertask)
+        self.qsup.setIcon(self.actionColumns, self.mIcon.columns)
+        self.qsup.setIcon(self.actionLog, self.mIcon.log)
 
         self.qtbl.initializing(self.tblMainList,self.rtaskCols)
         self.qtbl.formatting(self.tblMainList,sortingEnabled=True)
@@ -149,35 +150,14 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qcon.sigConnect(self.tblMainList, "clicked(QModelIndex)", self.sigTblActions)
         self.qcon.sigConnect(self.lstColumns, "itemClicked(QListWidgetItem*)", self.sigLstActions)
 
-        self.qcon.sigConnect(self.actionRenderTasks, "toggled(bool)", self.sigToolBarAction)
-        self.qcon.sigConnect(self.actionProperties, "toggled(bool)", self.sigToolBarAction)
-        self.qcon.sigConnect(self.actionColumns, "toggled(bool)", self.sigToolBarAction)
-
-        self.qcon.sigConnect(self.dckRenderTasks, "visibilityChanged(bool)", self.sigDckVisibiltyChange)
-        self.qcon.sigConnect(self.dckProperties, "visibilityChanged(bool)", self.sigDckVisibiltyChange)
-        self.qcon.sigConnect(self.dckColumns, "visibilityChanged(bool)", self.sigDckVisibiltyChange)
+        self.qcon.connectDockAndAction(self.dckLog, self.actionLog)
+        self.qcon.connectDockAndAction(self.dckRenderTasks, self.actionRenderTasks)
+        self.qcon.connectDockAndAction(self.dckProperties, self.actionProperties)
+        self.qcon.connectDockAndAction(self.dckColumns, self.actionColumns)
 
         self.qcon.connectToDragDropEx(self.tblMainList,self.sigTblDragDrop)
         self.qcon.connectToKeyPress(self.tblMainList,self.sigTblKeyPress)
         self.qcon.connectToClose(self,self.sigWinClose)
-
-    def sigDckVisibiltyChange(self, *arg):
-        self.sigJammer(True)
-        self.actionColumns.setChecked(self.dckColumns.isVisible())
-        self.actionProperties.setChecked(self.dckProperties.isVisible())
-        self.actionRenderTasks.setChecked(self.dckRenderTasks.isVisible())
-        self.sigJammer(False)
-
-    def sigToolBarAction(self, *arg):
-        self.sigJammer(True)
-        sender = self.sender()
-        if sender == self.actionColumns:
-            self.dckColumns.setVisible(self.actionColumns.isChecked())
-        if sender == self.actionProperties:
-            self.dckProperties.setVisible(self.actionProperties.isChecked())
-        if sender == self.actionRenderTasks:
-            self.dckRenderTasks.setVisible(self.actionRenderTasks.isChecked())
-        self.sigJammer(False)
 
     def sigLstActions(self, *arg):
         self.sigJammer()
@@ -304,10 +284,11 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             for eachRow in rows: self.tblMainList.removeRow(eachRow)
 
     def _getSelectedRTask(self, all=False):
+        ret = []
         rows = self.qtbl.getSelectedRowNo(self.tblMainList)
         if rows:
             if all:
-                ret = []
+
                 for eachRow in rows:
                     items = self.qtbl.getRowItems(self.tblMainList, eachRow)
                     rtask = self.qtbl.getTag(items[0])
