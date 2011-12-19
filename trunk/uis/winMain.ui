@@ -6,27 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>714</width>
-    <height>510</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <property name="toolButtonStyle">
-   <enum>Qt::ToolButtonTextBesideIcon</enum>
-  </property>
-  <property name="dockNestingEnabled">
-   <bool>true</bool>
-  </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_14">
+   <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QGroupBox" name="groupBox">
       <property name="title">
        <string/>
       </property>
-      <layout class="QGridLayout" name="gridLayout_6">
+      <layout class="QGridLayout" name="gridLayout_7">
        <property name="margin">
         <number>1</number>
        </property>
@@ -34,14 +28,14 @@
         <number>1</number>
        </property>
        <item row="0" column="0">
-        <widget class="QFrame" name="frame_3">
+        <widget class="QFrame" name="frame_4">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QGridLayout" name="gridLayout_4">
+         <layout class="QGridLayout" name="gridLayout_8">
           <property name="margin">
            <number>1</number>
           </property>
@@ -93,14 +87,14 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QFrame" name="frame_4">
+        <widget class="QFrame" name="frame_5">
          <property name="frameShape">
           <enum>QFrame::Panel</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Sunken</enum>
          </property>
-         <layout class="QGridLayout" name="gridLayout_5">
+         <layout class="QGridLayout" name="gridLayout_12">
           <property name="margin">
            <number>1</number>
           </property>
@@ -127,7 +121,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>714</width>
+     <width>800</width>
      <height>18</height>
     </rect>
    </property>
@@ -141,12 +135,12 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QGridLayout" name="gridLayout_2">
+    <layout class="QGridLayout" name="gridLayout_4">
      <property name="margin">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="spacing">
-      <number>1</number>
+      <number>0</number>
      </property>
      <item row="0" column="0">
       <widget class="QFrame" name="frame">
@@ -168,7 +162,7 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <layout class="QGridLayout" name="gridLayout">
+       <layout class="QGridLayout" name="gridLayout_2">
         <property name="margin">
          <number>1</number>
         </property>
@@ -244,20 +238,6 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionRenderTasks"/>
-   <addaction name="actionProperties"/>
-   <addaction name="actionColumns"/>
-  </widget>
   <widget class="QDockWidget" name="dckProperties">
    <property name="windowTitle">
     <string>Properties</string>
@@ -266,17 +246,8 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QGridLayout" name="gridLayout_7">
-     <property name="leftMargin">
-      <number>1</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
+    <layout class="QGridLayout" name="gridLayout_5">
+     <property name="margin">
       <number>0</number>
      </property>
      <property name="spacing">
@@ -294,173 +265,215 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-186</y>
-          <width>243</width>
-          <height>348</height>
+          <y>-95</y>
+          <width>359</width>
+          <height>279</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_12">
-         <item row="6" column="0">
-          <widget class="QGroupBox" name="frmPropButtons">
-           <property name="title">
-            <string/>
+        <layout class="QGridLayout" name="gridLayout_13">
+         <property name="horizontalSpacing">
+          <number>0</number>
+         </property>
+         <property name="margin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QFrame" name="frame_3">
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
            </property>
-           <layout class="QGridLayout" name="gridLayout_13">
-            <property name="margin">
-             <number>2</number>
-            </property>
-            <property name="spacing">
-             <number>2</number>
-            </property>
-            <item row="0" column="3">
-             <widget class="QToolButton" name="btnPropApply">
-              <property name="text">
-               <string>Apply</string>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="QGroupBox" name="frmPropFileInfo">
+              <property name="title">
+               <string>File Info:</string>
               </property>
-              <property name="toolButtonStyle">
-               <enum>Qt::ToolButtonTextBesideIcon</enum>
-              </property>
-              <property name="autoRaise">
+              <property name="flat">
                <bool>true</bool>
               </property>
+              <layout class="QGridLayout" name="gridLayout_10">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>Name:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lePropFileName">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string>Path:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="lePropFilePath">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
-            <item row="0" column="0">
-             <spacer name="horizontalSpacer_3">
+            <item row="1" column="0">
+             <widget class="QGroupBox" name="frmPropFrameRange">
+              <property name="title">
+               <string>Frame Range:</string>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_9">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Start Frame:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lePropStartFrame">
+                 <property name="text">
+                  <string extracomment="s"/>
+                 </property>
+                 <property name="flagFullName" stdset="0">
+                  <string>Start Frame</string>
+                 </property>
+                 <property name="flagShortName" stdset="0">
+                  <string>s</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>End Frame:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="lePropEndFrame">
+                 <property name="text">
+                  <string extracomment="s"/>
+                 </property>
+                 <property name="flagFullName" stdset="0">
+                  <string>End Frame</string>
+                 </property>
+                 <property name="flagShortName" stdset="0">
+                  <string>e</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QGroupBox" name="frmPropProjPath">
+              <property name="title">
+               <string>Proj Path:</string>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_11">
+               <item row="0" column="0">
+                <widget class="QLineEdit" name="lePropProjPath">
+                 <property name="text">
+                  <string extracomment="s"/>
+                 </property>
+                 <property name="flagFullName" stdset="0">
+                  <string>Project Path</string>
+                 </property>
+                 <property name="flagShortName" stdset="0">
+                  <string>proj</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <spacer name="verticalSpacer">
               <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+               <enum>Qt::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>40</width>
-                <height>20</height>
+                <width>341</width>
+                <height>110</height>
                </size>
               </property>
              </spacer>
             </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QGroupBox" name="frmPropFileInfo">
-           <property name="title">
-            <string>File Info:</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_10">
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_5">
-              <property name="text">
-               <string>Name:</string>
+            <item row="4" column="0">
+             <widget class="QGroupBox" name="frmPropButtons">
+              <property name="title">
+               <string/>
               </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lePropFileName">
-              <property name="readOnly">
+              <property name="flat">
                <bool>true</bool>
               </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_6">
-              <property name="text">
-               <string>Path:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="lePropFilePath">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
+              <layout class="QGridLayout" name="gridLayout_14">
+               <property name="margin">
+                <number>2</number>
+               </property>
+               <property name="spacing">
+                <number>2</number>
+               </property>
+               <item row="0" column="3">
+                <widget class="QToolButton" name="btnPropApply">
+                 <property name="text">
+                  <string>Apply</string>
+                 </property>
+                 <property name="toolButtonStyle">
+                  <enum>Qt::ToolButtonTextBesideIcon</enum>
+                 </property>
+                 <property name="autoRaise">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <spacer name="horizontalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
           </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QGroupBox" name="frmPropProjPath">
-           <property name="title">
-            <string>Project Path:</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_11">
-            <item row="0" column="0">
-             <widget class="QLineEdit" name="lePropProjPath"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QGroupBox" name="frmPropFrameRange">
-           <property name="title">
-            <string>Frame Range:</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_9">
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_3">
-              <property name="text">
-               <string>Start Frame:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lePropStartFrame"/>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>End Frame:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="lePropEndFrame"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QGroupBox" name="frmPropOutputPath">
-           <property name="title">
-            <string>Output Path:</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_15">
-            <item row="0" column="0">
-             <widget class="QLineEdit" name="lePropOutputPath"/>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </widget>
@@ -477,7 +490,7 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3">
-    <layout class="QGridLayout" name="gridLayout_8">
+    <layout class="QGridLayout" name="gridLayout_15">
      <property name="margin">
       <number>0</number>
      </property>
@@ -497,6 +510,23 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionRenderTasks"/>
+   <addaction name="actionProperties"/>
+   <addaction name="actionColumns"/>
+  </widget>
   <action name="actionRenderTasks">
    <property name="checkable">
     <bool>true</bool>
@@ -506,9 +536,6 @@
    </property>
    <property name="text">
     <string>Render Tasks</string>
-   </property>
-   <property name="toolTip">
-    <string>Show/Hide Render Tasks</string>
    </property>
   </action>
   <action name="actionProperties">
@@ -521,9 +548,6 @@
    <property name="text">
     <string>Properties</string>
    </property>
-   <property name="toolTip">
-    <string>Show/Hide Properties</string>
-   </property>
   </action>
   <action name="actionColumns">
    <property name="checkable">
@@ -535,108 +559,8 @@
    <property name="text">
     <string>Columns</string>
    </property>
-   <property name="toolTip">
-    <string>Show/Hide Columns to display in render task table</string>
-   </property>
   </action>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>actionProperties</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dckProperties</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>130</x>
-     <y>304</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionRenderTasks</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dckRenderTasks</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>130</x>
-     <y>128</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dckProperties</sender>
-   <signal>visibilityChanged(bool)</signal>
-   <receiver>actionProperties</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>130</x>
-     <y>364</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dckRenderTasks</sender>
-   <signal>visibilityChanged(bool)</signal>
-   <receiver>actionRenderTasks</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>130</x>
-     <y>136</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionColumns</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dckColumns</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>130</x>
-     <y>397</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dckColumns</sender>
-   <signal>visibilityChanged(bool)</signal>
-   <receiver>actionColumns</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>130</x>
-     <y>397</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
