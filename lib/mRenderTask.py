@@ -31,11 +31,13 @@ class RenderTask():
         self._muti=oplPyUtilities.oplPyUtilities()
 
         if file and os.path.exists(file):
+            self.file=file
             self.fileName=os.path.basename(file)
             self.filePath=os.path.dirname(file)
             self.addedOn=self._muti.getDateTime()
             self.status=mrts.YetToStart
         else:
+            self.file='-'
             self.fileName='-'
             self.filePath='-'
             self.addedOn='-'
@@ -43,7 +45,7 @@ class RenderTask():
 
         self.completedOn='-'
 
-        self.flags={}
+        self.flags=[]
 
 
 class RenderTaskSupport():
@@ -60,11 +62,11 @@ class RenderTaskSupport():
             info = self.getFlagInfoCore(eachProp)
             flagFullName = info[0]
             flagShortName = info[1]
-            flag = (
-                    flagFullName,
-                    flagShortName,
-                    eachProp
-                   )
+            flag = {
+                    "FLAG_FULL_NAME": flagFullName,
+                    "FLAG_SHORT_NAME": flagShortName,
+                    "FLAG_WIDGET": eachProp
+                   }
             self.rflags.append(flag)
 
     def emptyFlags(self):
@@ -74,13 +76,13 @@ class RenderTaskSupport():
             ret.append("")
         return ret
 
-    def getFlagNames(self):
+    def getAllFlagNames(self):
         lst=[]
-        for name in self.rflags:
-            lst.append(name[0])
+        for flag in self.rflags:
+            lst.append(flag['FLAG_FULL_NAME'])
         return lst
 
-    def getFlagNamesAndFixedNames(self):
+    def getAllFlagNamesWithFixedNames(self):
         fixed = [
                 'ID',
                 'Status',
@@ -88,7 +90,7 @@ class RenderTaskSupport():
                 'Added On',
                 'Completed On'
                 ]
-        allCols = fixed + self.getFlagNames()
+        allCols = fixed + self.getAllFlagNames()
         return allCols
 
     def getFlagInfoCore(self, widget):
@@ -124,26 +126,52 @@ class RenderTaskSupport():
             if len(atr)==2 and atr[1]==status:
                 return atr[0]
 
-    def rtaskUpdate(self, rtask=None, activeWidgets=[]):
+    def rtaskUpdateFromUI(self, rtask=None, activeWidgets=[]):
         if rtask and activeWidgets:
-            rtask.flags = self.getFlagValues(activeWidgets)
+            rtask.flags = self.getFlagValuesFromWidgets(activeWidgets)
 
-    def getFlagValues(self, widgets=[]):
+    def getFlagValuesFromWidgets(self, widgets=[]):
+        '''
+        rtaskFlagWithValue = [
+                                {
+                                    'flagFullName': "Some Flag",
+                                    'flagShortName': "SF",
+                                    'value': "some value",
+                                },
+
+                                {
+                                    'flagFullName': "Some Flag2",
+                                    'flagShortName': "SF2",
+                                    'value': "some value2",
+                                },
+                             ]
+        '''
+
         res = []
         for rflag in self.rflags:
-            if rflag[2] in widgets:
-                flagFullName = rflag[0]
-                flagShortName = rflag[1]
-                widget = rflag[2]
+            if rflag['FLAG_WIDGET'] in widgets:
+                flagFullName = rflag['FLAG_FULL_NAME']
+                flagShortName = rflag['FLAG_SHORT_NAME']
+                widget = rflag['FLAG_WIDGET']
                 value = self.parent.qsup.getText(widget)
                 dt = {}
                 dt['flagFullName'] = flagFullName
                 dt['flagShortName'] = flagShortName
                 dt['value'] = value
-                dt['widget'] = widget
                 res.append(dt)
         return res
 
+    def getWidgetForFlagName(self, flagName):
+        for rflag in self.rflags:
+            if flagName == rflag['FLAG_FULL_NAME']:
+                return rflag['FLAG_WIDGET']
+        return None
+
+    def getFlagInfoForWidget(self, flagWidget):
+        for rflag in self.rflags:
+            if flagWidget == rflag['FLAG_WIDGET']:
+                return rflag['FLAG_FULL_NAME']
+        return None
 
 
 

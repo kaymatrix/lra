@@ -25,6 +25,8 @@ class Icons():
         self.log = "/02/16/09.png"
         self.startrender = "/02/16/22.png"
         self.apply = "/03/16/02.png"
+        self.save = "/02/16/45.png"
+        self.load = "/01/16/46.png"
 
         self.circleRed = "/04/16/01.png"
         self.circleGreen = "/04/16/02.png"

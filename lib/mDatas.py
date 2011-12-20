@@ -19,7 +19,7 @@ class Datas():
         self.parent=lra.AppStart() if not parent else parent
 
     def doPopulateColumnsList(self):
-        lst = self.parent.rtaskSupport.getFlagNames()
+        lst = self.parent.rtaskSupport.getAllFlagNames()
         self.parent.qlst.populate(self.parent.lstColumns,lst,False,True)
 
     def doPrepareColumns(self):
@@ -33,5 +33,8 @@ class Datas():
             else:
                 self.parent.tblMainList.hideColumn(cno)
         self.parent.qtbl.resizeColumnsEx(self.parent.tblMainList)
+
+    def doSaveList(self):
+        pass
 
 
