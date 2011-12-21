@@ -19,7 +19,6 @@ class settings():
         self.iconPath="F:/Kumaresan/Dev/Python/lra/res/icons"
         self.rtcounter=0
 
-
 class Configs(settings):
     def __init__(self, file="settings.ini", autoLoad=True):
         settings.__init__(self)
