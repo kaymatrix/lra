@@ -20,7 +20,9 @@ class Datas():
 
     def doPopulateColumnsList(self):
         lst = self.parent.rtaskSupport.getAllFlagNames()
-        self.parent.qlst.populate(self.parent.lstColumns,lst,False,True)
+        items = self.parent.qlst.populate(self.parent.lstColumns,lst,False,True)
+        for eachItem in items:
+            self.parent.qsup.setIcon(eachItem, self.parent.mIcon.tag)
 
     def doPrepareColumns(self):
         itms = self.parent.qlst.getAllItem(self.parent.lstColumns)

@@ -161,13 +161,19 @@ class RenderTaskSupport():
                 res.append(dt)
         return res
 
-    def getWidgetForFlagName(self, flagName):
+    def getWidgetForFlagFullName(self, flagName):
         for rflag in self.rflags:
             if flagName == rflag['FLAG_FULL_NAME']:
                 return rflag['FLAG_WIDGET']
         return None
 
-    def getFlagInfoForWidget(self, flagWidget):
+    def getFlagShortNameForFlagFullName(self, flagName):
+        for rflag in self.rflags:
+            if flagName == rflag['FLAG_FULL_NAME']:
+                return rflag['FLAG_SHORT_NAME']
+        return None
+
+    def getFlagFullNameForWidget(self, flagWidget):
         for rflag in self.rflags:
             if flagWidget == rflag['FLAG_WIDGET']:
                 return rflag['FLAG_FULL_NAME']
