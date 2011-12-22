@@ -135,10 +135,24 @@ class winSettings(QtGui.QDialog, Ui_Dialog):
     def sigBtnActions(self, *arg):
         sender = self.sender()
         if sender == self.btnApply:
+           self.doSaveSettings()
            self.close()
 
         if sender == self.btnCancel:
            self.close()
+
+    def doSaveSettings(self):
+        self.mApp.mayafolder = self.qsup.getText(self.leMayaFolder)
+        self.mApp.mayabinfolder = self.qsup.getText(self.leMayaBinFolder)
+        self.mApp.mayabatchexefile = self.qsup.getText(self.leMayaBatchExeFile)
+        self.mApp.mayarenderexefile = self.qsup.getText(self.leMayaRenderExeFile)
+        self.mApp.saveSettings()
+
+    def doLoadSettings(self):
+        self.qsup.setText(self.leMayaFolder, self.mApp.mayafolder)
+        self.qsup.setText(self.leMayaBinFolder, self.mApp.mayabinfolder)
+        self.qsup.setText(self.leMayaBatchExeFile, self.mApp.mayabatchexefile)
+        self.qsup.setText(self.leMayaRenderExeFile, self.mApp.mayarenderexefile)
 
 
 if '__main__' == __name__:

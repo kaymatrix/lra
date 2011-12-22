@@ -82,10 +82,12 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qtbl = oplQtTable.oplQtTable(self)
         self.qlst = oplQtList.oplQtList(self)
 
+
         self.winSetting = winSettingsInterface.winSettings(self)
 
         self.rtaskSupport=mRenderTask.RenderTaskSupport(self, self.mIcon)
         self.mData = mDatas.Datas(self)
+        self.mRender = mDatas.RenderCommand(self)
 
         #Initialize
         self.initalize()
@@ -229,6 +231,8 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
     def sigBtnActions(self, *arg):
         self.sigJammer()
         sender = self.sender()
+        if sender == self.btnStartRender:
+            self.doStartRender()
         if sender == self.btnPropApply:
             self.doRTaskUpdate()
         if sender == self.btnRTaskLoad:
@@ -249,6 +253,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             self.doRTaskAdd(eachFile)
 
     def doShowSettings(self):
+        self.winSetting.doLoadSettings()
         self.winSetting.exec_()
 
     def doRTaskNewList(self):
@@ -270,7 +275,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
                 if eachFlag <> 'status' and eachFlag <> 'addedon':
                     dt={}
                     dt['flagFullName'] = eachFlag.title()
-                    dt['flagShortName'] = 'no'
+                    dt['flagShortName'] = self.rtaskSupport.getFlagShortNameForFlagFullName(dt['flagFullName'])
                     dt['value'] = str(ini.getOption(file, eachFlag))
                     rt.flags.append(dt)
 
@@ -388,6 +393,13 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         rtStatus = self.rtaskSupport.getStatusNameForStatus(rtask.status)
         items[1].setText(rtStatus)
 
+    def doStartRender(self):
+        for rt in self._getAllRTask():
+            exe,opt,sfile = self.mRender.commandForRtask(rt)
+            if exe and sfile:
+             cmd = '"%s" %s "%s"' % (exe,opt,sfile)
+             print cmd
+
     def _getSelectedRTask(self, all=False):
         ret = []
         rows = self.qtbl.getSelectedRowNo(self.tblMainList)
@@ -405,6 +417,14 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
         return ret
 
+    def _getAllRTask(self):
+        rows = self.tblMainList.rowCount()
+        ret =[]
+        for eachRow in range(0,rows):
+            items = self.qtbl.getRowItems(self.tblMainList, eachRow)
+            rtask = self.qtbl.getTag(items[0])
+            ret.append(rtask)
+        return ret
 
     def __enabledFlags(self):
         wdgts = []
