@@ -18,6 +18,11 @@ class settings():
         self.name="Render Assistant"
         self.iconPath="F:/Kumaresan/Dev/Python/lra/res/icons"
         self.rtcounter=0
+        self.mayafolder="E:/adm/Maya2012"
+        self.mayabinfolder="E:/adm/Maya2012/bin"
+        self.mayabatchexefile="E:/adm/Maya2012/bin/mayabatch.exe"
+        self.mayarenderexefile="E:/adm/Maya2012/bin/render.exe"
+
 
 class Configs(settings):
     def __init__(self, file="settings.ini", autoLoad=True):
