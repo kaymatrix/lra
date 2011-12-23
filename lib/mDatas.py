@@ -9,7 +9,7 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
-
+from PyQt4 import QtCore, QtGui
 import oplPyUtilities
 import lra
 import oplQtSupport
@@ -20,6 +20,7 @@ import oplINIRW
 import mIcons
 import mSettings
 import mRenderTask
+import oplQtProcess
 
 class Datas():
 
@@ -74,3 +75,27 @@ class RenderCommand():
         if flags['flagShortName'] and flags['value']:
             return ' -%s %s' % (flags['flagShortName'],flags['value'])
         return
+
+class Execution():
+
+    def __init__(self,exe='',args='', txt=None):
+        lst = []
+        self.txt=txt
+        for arg in args.split():
+            if arg:
+                lst.append(arg)
+        if exe:
+            self.prc = oplQtProcess.Process(exe,lst, self.dataCame, self.endCallBack)
+            self.prc.execute()
+
+    def endCallBack(self, *arg):
+        print "Ending all " + str(arg)
+        self.prc.cls()
+
+    def dataCame(self, data):
+        oldData = self.txt.toPlainText()
+        self.txt.setText(oldData + '\n' +  data)
+        vsb = self.txt.verticalScrollBar()
+        vsb.setValue(vsb.maximum())
+
+
