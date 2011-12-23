@@ -82,12 +82,12 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qtbl = oplQtTable.oplQtTable(self)
         self.qlst = oplQtList.oplQtList(self)
 
-
         self.winSetting = winSettingsInterface.winSettings(self)
 
         self.rtaskSupport=mRenderTask.RenderTaskSupport(self, self.mIcon)
         self.mData = mDatas.Datas(self)
         self.mRender = mDatas.RenderCommand(self)
+
 
         #Initialize
         self.initalize()
@@ -394,11 +394,15 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         items[1].setText(rtStatus)
 
     def doStartRender(self):
+        cmd = ''
         for rt in self._getAllRTask():
             exe,opt,sfile = self.mRender.commandForRtask(rt)
             if exe and sfile:
              cmd = '"%s" %s "%s"' % (exe,opt,sfile)
              print cmd
+        if cmd:
+            execute = mDatas.Execution(exe, '%s "%s"' % (opt, sfile), self.tbLog)
+
 
     def _getSelectedRTask(self, all=False):
         ret = []
