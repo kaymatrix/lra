@@ -12,6 +12,7 @@
 
 import configobj
 import oplPyUtilities
+import os
 
 class settings():
     def __init__(self):
@@ -22,6 +23,7 @@ class settings():
         self.mayabinfolder="E:/adm/Maya2012/bin"
         self.mayabatchexefile="E:/adm/Maya2012/bin/mayabatch.exe"
         self.mayarenderexefile="E:/adm/Maya2012/bin/render.exe"
+        self.renderLogsFolder= os.path.join(os.getcwd(),"renderlogs")
 
 
 class Configs(settings):

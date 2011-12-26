@@ -60,10 +60,12 @@ import oplQtConnection
 import oplQtTable
 import oplQtList
 import oplINIRW
+import oplPyUtilities
 import mIcons
 import mSettings
 import mRenderTask
 import mDatas
+import mAction
 import winSettingsInterface
 
 class AppStart(QtGui.QMainWindow, Ui_MainWindow):
@@ -81,13 +83,12 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qcon = oplQtConnection.oplQtConnection(self)
         self.qtbl = oplQtTable.oplQtTable(self)
         self.qlst = oplQtList.oplQtList(self)
+        self.mUtil = oplPyUtilities.oplPyUtilities()
 
         self.winSetting = winSettingsInterface.winSettings(self)
 
         self.rtaskSupport=mRenderTask.RenderTaskSupport(self, self.mIcon)
         self.mData = mDatas.Datas(self)
-        self.mRender = mDatas.RenderCommand(self)
-
 
         #Initialize
         self.initalize()
@@ -134,6 +135,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup.setIcon(self.btnPropApply, self.mIcon.apply)
         self.qsup.setIcon(self.btnRTaskLoad, self.mIcon.load)
         self.qsup.setIcon(self.btnRTaskSave, self.mIcon.save)
+        self.qsup.setIcon(self.btnTerminate, self.mIcon.stop)
 
         self.qsup.setIcon(self.actionProperties, self.mIcon.properties)
         self.qsup.setIcon(self.actionRenderTasks, self.mIcon.rendertask)
@@ -247,6 +249,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.mApp.saveSettings()
         self.mIcon.saveSettings()
 
+
     def sigTblDragDrop(self, *arg):
         files = self.qcon.dropEventInfoEx(arg[0])
         for eachFile in files:
@@ -315,8 +318,9 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
     def doRTaskAdd(self, file):
         rt = mRenderTask.RenderTask(file)
         rtId = self.rtaskSupport.rcnt+1
+        rt.id=str(rtId).zfill(4)
         rowData = [
-                    str(rtId).zfill(4),     #ID
+                    rt.id,                  #ID
                     '',                     #STATUS
                     rt.fileName,            #FILEPATH
                     rt.addedOn,             #ADDEDON
@@ -330,6 +334,16 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.rtaskSupport.rcnt=rtId
         return rt
 
+    def refreshStatus(self,rt):
+        row = self.getRowOfID(rt.id)
+        if row>=0:
+            #self.doRTaskUpdate()
+            self.doStatusUpdate(rt,row)
+
+
+    def getRowOfID(self, id=-1):
+        row = self.qtbl.findRow(self.tblMainList,str(id),True,[0])
+        return row[0] if len(row) else -1
 
     def doRTaskUpdate(self):
         rtask = self._getSelectedRTask()
@@ -392,17 +406,11 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup.setIcon(items[1],rtIcon)
         rtStatus = self.rtaskSupport.getStatusNameForStatus(rtask.status)
         items[1].setText(rtStatus)
+        self.qtbl.resizeColumnsEx(self.tblMainList)
 
     def doStartRender(self):
-        cmd = ''
-        for rt in self._getAllRTask():
-            exe,opt,sfile = self.mRender.commandForRtask(rt)
-            if exe and sfile:
-             cmd = '"%s" %s "%s"' % (exe,opt,sfile)
-             print cmd
-        if cmd:
-            execute = mDatas.Execution(exe, '%s "%s"' % (opt, sfile), self.tbLog)
-
+        now=mAction.FinalStage(self)
+        now.GameOver()
 
     def _getSelectedRTask(self, all=False):
         ret = []

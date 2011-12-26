@@ -15,21 +15,11 @@ import os
 import mRTaskStatus as mrts
 import mIcons
 
-class ERenderStatus():
-
-    def __ini__(self):
-        self.YetToStart=1
-        self.Rendering=2
-        self.RenderedWithNoError=3
-        self.RenderedWithError=4
-        self.RenderCancelled=5
-        self.FileMissing=6
-
 class RenderTask():
 
     def __init__(self, file=''):
         self._muti=oplPyUtilities.oplPyUtilities()
-
+        self.id=-1
         if file and os.path.exists(file):
             self.file=file
             self.fileName=os.path.basename(file)
