@@ -49,53 +49,5 @@ class Datas():
         pass
 
 
-class RenderCommand():
-
-    def __init__(self,parent):
-        self.parent = parent
-        self.mApp = mSettings.Configs() if not parent else self.parent.mApp
-        self.mIcon = mIcons.Configs() if not parent else self.parent.mIcon
-        self.qsup = oplQtSupport.oplQtSupport(self,self.mApp.iconPath)
-        self.qcon = oplQtConnection.oplQtConnection(self)
-        self.qtbl = oplQtTable.oplQtTable(self)
-        self.qlst = oplQtList.oplQtList(self)
-
-    def commandForRtask(self, rtask=None):
-        rt = mRenderTask.RenderTask()
-        rt = rtask
-        exe = self.mApp.mayarenderexefile
-        sfile = rt.file
-        opt = ''
-        for f in rt.flags:
-            fv = self._getFlagNVal(f)
-            if fv: opt = opt + fv
-        return (exe,opt,sfile)
-
-    def _getFlagNVal(self, flags={}):
-        if flags['flagShortName'] and flags['value']:
-            return ' -%s %s' % (flags['flagShortName'],flags['value'])
-        return
-
-class Execution():
-
-    def __init__(self,exe='',args='', txt=None):
-        lst = []
-        self.txt=txt
-        for arg in args.split():
-            if arg:
-                lst.append(arg)
-        if exe:
-            self.prc = oplQtProcess.Process(exe,lst, self.dataCame, self.endCallBack)
-            self.prc.execute()
-
-    def endCallBack(self, *arg):
-        print "Ending all " + str(arg)
-        self.prc.cls()
-
-    def dataCame(self, data):
-        oldData = self.txt.toPlainText()
-        self.txt.setText(oldData + '\n' +  data)
-        vsb = self.txt.verticalScrollBar()
-        vsb.setValue(vsb.maximum())
 
 
