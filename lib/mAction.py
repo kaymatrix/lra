@@ -11,7 +11,6 @@
 #!/usr/bin/env python
 from PyQt4 import QtCore, QtGui
 import oplPyUtilities
-import lra
 import oplQtSupport
 import oplQtConnection
 import oplQtTable
@@ -24,13 +23,19 @@ import oplQtProcess
 import mRTaskStatus as mrts
 import os
 
+if 0:
+    import lra
 
 class FinalStage():
 
     def __init__(self, parent):
         self._prn=lra.AppStart() if not parent else parent
+        self._prn.qcon.sigConnect(self._prn.btnTerminate, "clicked()", self._doQuitGame)
+        self._prn.qcon.sigConnect(self._prn.btnSkipRender, "clicked()", self._doSkillGameLevel)
+
         self._mRender = RenderCommand(self._prn)
-        self._prn.qcon.connectToClick(self._prn.btnTerminate, self._doQuitGame)
+        self.gameCtrl=None
+
 
     def GameOver(self):
         self._doBeforeGameBegins()
@@ -79,49 +84,57 @@ class FinalStage():
 
         self._doSaveGameRunLog(self.__getFileName(rt))
 
-        #rt = mRenderTask.RenderTask('')
-        self._prn.tbLog.setText('')
-        if rt.status == mrts.Rendering:
-            rt.status=mrts.RenderedWithNoError
-            self._prn.refreshStatus(rt)
-        self._chooseATaskStartTheGame(rt)
+        if self.gameCtrl._unknownError:
+            print "UnkownError"
+            self._doWonTheGameThenWhat()
+
+        elif (not self.gameCtrl._terminate and not self.gameCtrl._terminateAll):
+            #rt = mRenderTask.RenderTask('')
+            self._prn.tbLog.setText('')
+            if rt.status == mrts.Rendering:
+                rt.status=mrts.RenderedWithNoError
+                self._prn.refreshStatus(rt)
+            self._chooseATaskStartTheGame(rt)
+
+        elif self.gameCtrl._terminate:
+            self._prn.tbLog.setText('')
+            if rt.status == mrts.Rendering:
+                rt.status=mrts.RenderCancelled
+                self._prn.refreshStatus(rt)
+            self._chooseATaskStartTheGame(rt)
+
+        elif self.gameCtrl._terminateAll:
+            self._prn.tbLog.setText('')
+            if rt.status == mrts.Rendering:
+                rt.status=mrts.RenderCancelled
+                self._prn.refreshStatus(rt)
+            self._doWonTheGameThenWhat()
 
     def _doAfterEnteringTheStage(self, rt):
-        pass
+        self.__lockForRendering()
 
     def _doBeforeEnteringTheStage(self, rt):
         pass
 
     def _doBeforeGameBegins(self):
-        #Something has to be locked first
-        self._prn.btnPropApply.setEnabled(False)
-        self._prn.btnRTaskLoad.setEnabled(False)
-        self._prn.btnRTaskSave.setEnabled(False)
-        self._prn.btnStartRender.setEnabled(False)
-        self._prn.actionLoad_List.setEnabled(False)
-        self._prn.actionNew_List.setEnabled(False)
-        self._prn.actionSave_List.setEnabled(False)
-
-        self._prn.btnTerminate.setEnabled(True)
+        self.__lockForRendering()
 
     def _doWonTheGameThenWhat(self):
-        #Something has to be locked first
-        self._prn.btnPropApply.setEnabled(True)
-        self._prn.btnRTaskLoad.setEnabled(True)
-        self._prn.btnRTaskSave.setEnabled(True)
-        self._prn.btnStartRender.setEnabled(True)
-        self._prn.actionLoad_List.setEnabled(True)
-        self._prn.actionNew_List.setEnabled(True)
-        self._prn.actionSave_List.setEnabled(True)
-
-        self._prn.btnTerminate.setEnabled(False)
+        #Release all
+        self.__lockForRendering(False)
 
     def _doAfterGameBegins(self):
         pass
 
-    def _doQuitGame(self):
-        self.gameCtrl.terminate()
+    def _doSkillGameLevel(self):
+        if self.gameCtrl:
+            if self._prn.qsup.showYesNoBox("Confirm","Are you sure to terminate current task and go to next task?"):
+                self.gameCtrl.terminate()
 
+    def _doQuitGame(self):
+        if self.gameCtrl:
+            if self._prn.qsup.showYesNoBox("Confirm","Are you sure to terminate current task and stop rendering?"):
+                self.gameCtrl.terminateAll()
 
     def _doSaveGameRunLog(self, fileName):
         data = self._prn.tbLog.toPlainText()
@@ -134,12 +147,27 @@ class FinalStage():
     def __getFileName(self, rt):
         return '%s_%s.log' % (rt.id,rt.fileName)
 
+    def __lockForRendering(self, lock=True):
+        #Something has to be locked first
+        self._prn.btnPropApply.setEnabled(not lock)
+        self._prn.btnRTaskLoad.setEnabled(not lock)
+        self._prn.btnRTaskSave.setEnabled(not lock)
+        self._prn.btnStartRender.setEnabled(not lock)
+        self._prn.actionLoad_List.setEnabled(not lock)
+        self._prn.actionNew_List.setEnabled(not lock)
+        self._prn.actionSave_List.setEnabled(not lock)
+
+        self._prn.btnTerminate.setEnabled(lock)
+        self._prn.btnSkipRender.setEnabled(lock)
 
 class Execution():
 
     def __init__(self, prn=None, rTask=None, onProcessCompletes=None, logDisplay=None):
 
         self._withError=False
+        self._terminate=False
+        self._terminateAll=False
+        self._unknownError=False
 
         if rTask and prn:
             self._prn = prn
@@ -153,7 +181,7 @@ class Execution():
             self._file = File
             self._args = self._processArguments(Options,File)
 
-            if (self._exe and self._args and self._file and
+            if (self._exe and self._file and
                 os.path.exists(self._exe) and
                 os.path.exists(self._file)):
                 self.prc = oplQtProcess.Process(self._exe,
@@ -167,17 +195,29 @@ class Execution():
                 if self._rt.status == mrts.YetToStart:
                     self._rt.status = mrts.Rendering
                     self._prn.refreshStatus(self._rt)
+            else:
+                print "Some problem."
+                self._unknownError=True
+                self._onProcessCompletes()
         else:
             print "No render task or No UIs given for Execution."
+            self._unknownError=True
+            self._onProcessCompletes()
+
 
     def terminate(self):
         print self._rt.id + " Terminate Triggered!"
+        self._terminate=True
+        self.prc.terminate()
+
+    def terminateAll(self):
+        print self._rt.id + " Terminatie All Triggered!"
+        self._terminateAll=True
         self.prc.terminate()
 
     def _processArguments(self, Options=None, File=None):
-
         lst = []
-        if Options and File:
+        if File:
             args = '%s "%s"' % (Options,File)
             if not type(args) is type([]):
                 for arg in args.split():

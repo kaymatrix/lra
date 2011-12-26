@@ -35,6 +35,7 @@ class Icons():
         self.settings = "/02/16/36.png"
         self.tag = "/01/16/17.png"
         self.stop = "/03/16/42.png"
+        self.skip = "/03/16/37.png"
 
         self.circleRed = "/04/16/01.png"
         self.circleGreen = "/04/16/02.png"

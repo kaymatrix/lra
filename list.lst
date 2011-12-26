@@ -1,18 +1,22 @@
-[C:\Users\AIAA\Documents\maya\projects\default\scenes\first.mb]
+[0380]
 status = 1
-start frame = 3
-end frame = 13
-addedon = 2011-12-25 22:02:23
+start frame = 89
+end frame = 99
+file = C:\Users\AIAA\Documents\maya\projects\default\scenes\first.mb
+addedon = 2011-12-26 10:09:22
 
-[C:\Users\AIAA\Documents\maya\projects\default\scenes\second.mb]
+[0378]
 status = 1
-start frame = 3
-end frame = 10
-addedon = 2011-12-25 22:02:23
+file = C:\Users\AIAA\Documents\maya\projects\default\scenes\sad.mb
+addedon = 2011-12-26 10:09:22
 
-[C:\Users\AIAA\Documents\maya\projects\default\scenes\sad.mb]
+[0381]
 status = 1
-start frame = 5
-end frame = 10
-addedon = 2011-12-25 22:02:23
+file = C:\Users\AIAA\Documents\maya\projects\default\scenes\first.mb
+addedon = 2011-12-26 10:10:25
+
+[0379]
+status = 1
+file = C:\Users\AIAA\Documents\maya\projects\default\scenes\second.mb
+addedon = 2011-12-26 10:09:22
 
