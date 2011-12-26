@@ -101,6 +101,9 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.doConnections()
         self.doUIReDesigns()
 
+        #Defaults - Setup 3
+        self.fin=mAction.FinalStage(self)
+
     def initalize(self):
         self.groupedWidgets = {
                                 self.frmPropFrameRange:[
@@ -136,6 +139,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup.setIcon(self.btnRTaskLoad, self.mIcon.load)
         self.qsup.setIcon(self.btnRTaskSave, self.mIcon.save)
         self.qsup.setIcon(self.btnTerminate, self.mIcon.stop)
+        self.qsup.setIcon(self.btnSkipRender, self.mIcon.skip)
 
         self.qsup.setIcon(self.actionProperties, self.mIcon.properties)
         self.qsup.setIcon(self.actionRenderTasks, self.mIcon.rendertask)
@@ -156,6 +160,16 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         #Inital Settings 1
         self.actionProperties.setChecked(False)
         self.actionColumns.setChecked(False)
+
+        self.btnRTaskSave.setEnabled(False)
+        self.btnStartRender.setEnabled(False)
+        self.btnSkipRender.setEnabled(False)
+        self.btnTerminate.setEnabled(False)
+        self.actionNew_List.setEnabled(False)
+        self.actionSave_List.setEnabled(False)
+
+        self.btnRTaskLoad.setEnabled(True)
+        self.actionLoad_List.setEnabled(True)
 
         #Initial Populates
         self.mData.doPopulateColumnsList()
@@ -249,7 +263,6 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.mApp.saveSettings()
         self.mIcon.saveSettings()
 
-
     def sigTblDragDrop(self, *arg):
         files = self.qcon.dropEventInfoEx(arg[0])
         for eachFile in files:
@@ -266,20 +279,21 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         f = self.qsup.getFileToOpen(FileName='list.lst',FileType='All Files (*);;List Files (*.lst)')
         if not f: return
         ini = oplINIRW.INIRW(f,True)
-        files = ini.getSectionList()
+        fileIds = ini.getSectionList()
         self.doRTaskNewList()
-        for file in files:
+        for fileId in fileIds:
+            file = ini.getOption(fileId,'file')
             rt = mRenderTask.RenderTask()
             rt = self.doRTaskAdd(file)
-            rt.status = int(ini.getOption(file,'status'))
-            rt.addedOn = ini.getOption(file,'addedOn')
+            rt.status = int(ini.getOption(fileId,'status'))
+            rt.addedOn = ini.getOption(fileId,'addedOn')
             self.doStatusUpdate(rt,self.tblMainList.rowCount()-1)
-            for eachFlag in ini.getOptionList(file):
-                if eachFlag <> 'status' and eachFlag <> 'addedon':
+            for eachFlag in ini.getOptionList(fileId):
+                if eachFlag <> 'status' and eachFlag <> 'addedon' and eachFlag <> 'file':
                     dt={}
                     dt['flagFullName'] = eachFlag.title()
                     dt['flagShortName'] = self.rtaskSupport.getFlagShortNameForFlagFullName(dt['flagFullName'])
-                    dt['value'] = str(ini.getOption(file, eachFlag))
+                    dt['value'] = str(ini.getOption(fileId, eachFlag))
                     rt.flags.append(dt)
 
             col = self.qtbl.getHeaderColNo(self.tblMainList,'Added On')
@@ -303,11 +317,12 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         for r in range(0,self.tblMainList.rowCount()):
             items = self.qtbl.getRowItems(self.tblMainList, r)
             rt = self.qtbl.getTag(items[0])
-            ini.setSection(rt.file)
-            ini.setOption(rt.file, 'addedOn', rt.addedOn)
-            ini.setOption(rt.file, 'status', rt.status)
+            ini.setSection(rt.id)
+            ini.setOption(rt.id, 'file', rt.file)
+            ini.setOption(rt.id, 'addedOn', rt.addedOn)
+            ini.setOption(rt.id, 'status', rt.status)
             for flag in rt.flags:
-                ini.setOption(rt.file, flag['flagFullName'], flag['value'])
+                ini.setOption(rt.id, flag['flagFullName'], flag['value'])
         self.qsup.showIformationBox("lra","Current list saved, You can load it later!")
 
     def doRTaskSelected(self):
@@ -332,6 +347,11 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.doStatusUpdate(rt,self.tblMainList.rowCount()-1)
         self.qtbl.resizeColumnsEx(self.tblMainList)
         self.rtaskSupport.rcnt=rtId
+
+        self.btnStartRender.setEnabled(True)
+        self.btnRTaskSave.setEnabled(True)
+        self.actionSave_List.setEnabled(True)
+
         return rt
 
     def refreshStatus(self,rt):
@@ -339,7 +359,6 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         if row>=0:
             #self.doRTaskUpdate()
             self.doStatusUpdate(rt,row)
-
 
     def getRowOfID(self, id=-1):
         row = self.qtbl.findRow(self.tblMainList,str(id),True,[0])
@@ -357,6 +376,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             #Now to update the UI columns.
 
             row = rows[0]
+            #row = self.getRowOfID(rtask[0].id)
             #Clear First
             for widget in self.propWidgets:
                 flagFullName,flagShortName = self.rtaskSupport.getFlagInfoCore(widget)
@@ -409,8 +429,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qtbl.resizeColumnsEx(self.tblMainList)
 
     def doStartRender(self):
-        now=mAction.FinalStage(self)
-        now.GameOver()
+        self.fin.GameOver()
 
     def _getSelectedRTask(self, all=False):
         ret = []

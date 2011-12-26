@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'F:\Kumaresan\Dev\Python\lra\uis\winMain.ui'
 #
-# Created: Sun Dec 25 20:52:05 2011
+# Created: Mon Dec 26 09:44:42 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -110,22 +110,27 @@ class Ui_MainWindow(object):
         self.btnStartRender.setObjectName(_fromUtf8("btnStartRender"))
         self.gridLayout_2.addWidget(self.btnStartRender, 0, 0, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem1, 0, 2, 1, 1)
+        self.gridLayout_2.addItem(spacerItem1, 0, 3, 1, 1)
         self.btnRTaskSave = QtGui.QToolButton(self.frame)
         self.btnRTaskSave.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
         self.btnRTaskSave.setAutoRaise(True)
         self.btnRTaskSave.setObjectName(_fromUtf8("btnRTaskSave"))
-        self.gridLayout_2.addWidget(self.btnRTaskSave, 0, 4, 1, 1)
+        self.gridLayout_2.addWidget(self.btnRTaskSave, 0, 5, 1, 1)
         self.btnRTaskLoad = QtGui.QToolButton(self.frame)
         self.btnRTaskLoad.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
         self.btnRTaskLoad.setAutoRaise(True)
         self.btnRTaskLoad.setObjectName(_fromUtf8("btnRTaskLoad"))
-        self.gridLayout_2.addWidget(self.btnRTaskLoad, 0, 3, 1, 1)
+        self.gridLayout_2.addWidget(self.btnRTaskLoad, 0, 4, 1, 1)
         self.btnTerminate = QtGui.QToolButton(self.frame)
         self.btnTerminate.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
         self.btnTerminate.setAutoRaise(True)
         self.btnTerminate.setObjectName(_fromUtf8("btnTerminate"))
-        self.gridLayout_2.addWidget(self.btnTerminate, 0, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.btnTerminate, 0, 2, 1, 1)
+        self.btnSkipRender = QtGui.QToolButton(self.frame)
+        self.btnSkipRender.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.btnSkipRender.setAutoRaise(True)
+        self.btnSkipRender.setObjectName(_fromUtf8("btnSkipRender"))
+        self.gridLayout_2.addWidget(self.btnSkipRender, 0, 1, 1, 1)
         self.gridLayout_4.addWidget(self.frame, 0, 0, 1, 1)
         self.frame_2 = QtGui.QFrame(self.dockWidgetContents)
         self.frame_2.setFrameShape(QtGui.QFrame.Panel)
@@ -160,7 +165,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 251, 261))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 426, 261))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.gridLayout_6 = QtGui.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
@@ -355,6 +360,7 @@ class Ui_MainWindow(object):
         self.btnRTaskSave.setText(QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8))
         self.btnRTaskLoad.setText(QtGui.QApplication.translate("MainWindow", "Load", None, QtGui.QApplication.UnicodeUTF8))
         self.btnTerminate.setText(QtGui.QApplication.translate("MainWindow", "Stop Rendering", None, QtGui.QApplication.UnicodeUTF8))
+        self.btnSkipRender.setText(QtGui.QApplication.translate("MainWindow", "Skip Current Rendering", None, QtGui.QApplication.UnicodeUTF8))
         self.tblMainList.setSortingEnabled(True)
         self.dckProperties.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Properties", None, QtGui.QApplication.UnicodeUTF8))
         self.frmPropFileInfo.setTitle(QtGui.QApplication.translate("MainWindow", "File Info:", None, QtGui.QApplication.UnicodeUTF8))
