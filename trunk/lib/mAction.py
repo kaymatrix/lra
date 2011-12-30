@@ -90,21 +90,21 @@ class FinalStage():
 
         elif (not self.gameCtrl._terminate and not self.gameCtrl._terminateAll):
             #rt = mRenderTask.RenderTask('')
-            self._prn.tbLog.setText('')
+            self._prn.tbLog.setPlainText('')
             if rt.status == mrts.Rendering:
                 rt.status=mrts.RenderedWithNoError
                 self._prn.refreshStatus(rt)
             self._chooseATaskStartTheGame(rt)
 
         elif self.gameCtrl._terminate:
-            self._prn.tbLog.setText('')
+            self._prn.tbLog.setPlainText('')
             if rt.status == mrts.Rendering:
                 rt.status=mrts.RenderCancelled
                 self._prn.refreshStatus(rt)
             self._chooseATaskStartTheGame(rt)
 
         elif self.gameCtrl._terminateAll:
-            self._prn.tbLog.setText('')
+            #self._prn.tbLog.setText('')
             if rt.status == mrts.Rendering:
                 rt.status=mrts.RenderCancelled
                 self._prn.refreshStatus(rt)
@@ -156,6 +156,8 @@ class FinalStage():
         self._prn.actionLoad_List.setEnabled(not lock)
         self._prn.actionNew_List.setEnabled(not lock)
         self._prn.actionSave_List.setEnabled(not lock)
+        self._prn.btnAddFile.setEnabled(not lock)
+        self._prn.btnRemoveFile.setEnabled(not lock)
 
         self._prn.btnTerminate.setEnabled(lock)
         self._prn.btnSkipRender.setEnabled(lock)
@@ -175,6 +177,7 @@ class Execution():
             self._mRender = RenderCommand(self._prn)
             self._onProcessCompletes = onProcessCompletes
             self._txt = logDisplay
+            self._chk = self._prn.cbxAutoScroll
             #Get the Game Command
             Exe,Options,File = self._mRender.commandForRtask(self._rt)
             self._exe = Exe
@@ -225,18 +228,22 @@ class Execution():
                         lst.append(arg)
         return lst
 
-
     def _onDataComes(self, data):
         oldData = self._txt.toPlainText()
-        self._txt.setText(oldData + '\n' +  data)
-        vsb = self._txt.verticalScrollBar()
-        vsb.setValue(vsb.maximum())
+        self._txt.setPlainText(oldData + '\n' +  data)
+        self._autoScroll()
 
     def _onErrorComes(self, data):
         oldData = self._txt.toPlainText()
-        self._txt.setText(oldData + '\n' +  data)
-        vsb = self._txt.verticalScrollBar()
-        vsb.setValue(vsb.maximum())
+        self._txt.setPlainText(oldData + '\n' +  data)
+        self._autoScroll()
+
+    def _autoScroll(self):
+        if self._chk.isChecked():
+            vsb = self._txt.verticalScrollBar()
+            vsb.setValue(vsb.maximum())
+            self._txt.repaint()
+
 
     def _onCompletion(self, data):
         print self._rt.id + " Completed!"
