@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'F:\Kumaresan\Dev\Python\lra\uis\winMain.ui'
 #
-# Created: Fri Dec 30 11:48:33 2011
+# Created: Wed Jan 04 10:10:50 2012
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,6 +21,8 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.gridLayout_16 = QtGui.QGridLayout(self.centralwidget)
+        self.gridLayout_16.setMargin(2)
+        self.gridLayout_16.setSpacing(2)
         self.gridLayout_16.setObjectName(_fromUtf8("gridLayout_16"))
         self.groupBox = QtGui.QGroupBox(self.centralwidget)
         self.groupBox.setTitle(_fromUtf8(""))
@@ -38,23 +40,24 @@ class Ui_MainWindow(object):
         self.gridLayout_8.setSpacing(1)
         self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
         spacerItem = QtGui.QSpacerItem(272, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_8.addItem(spacerItem, 0, 2, 1, 1)
-        self.label = QtGui.QLabel(self.frame_4)
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("Trebuchet MS"))
-        font.setPointSize(10)
-        font.setWeight(75)
-        font.setBold(True)
-        self.label.setFont(font)
-        self.label.setObjectName(_fromUtf8("label"))
-        self.gridLayout_8.addWidget(self.label, 0, 0, 1, 1)
+        self.gridLayout_8.addItem(spacerItem, 0, 1, 1, 1)
         self.lblStatus = QtGui.QLabel(self.frame_4)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Trebuchet MS"))
         font.setPointSize(10)
         self.lblStatus.setFont(font)
         self.lblStatus.setObjectName(_fromUtf8("lblStatus"))
-        self.gridLayout_8.addWidget(self.lblStatus, 0, 1, 1, 1)
+        self.gridLayout_8.addWidget(self.lblStatus, 0, 0, 1, 1)
+        self.btnLogSave = QtGui.QToolButton(self.frame_4)
+        self.btnLogSave.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.btnLogSave.setAutoRaise(True)
+        self.btnLogSave.setObjectName(_fromUtf8("btnLogSave"))
+        self.gridLayout_8.addWidget(self.btnLogSave, 0, 3, 1, 1)
+        self.btnLogClear = QtGui.QToolButton(self.frame_4)
+        self.btnLogClear.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.btnLogClear.setAutoRaise(True)
+        self.btnLogClear.setObjectName(_fromUtf8("btnLogClear"))
+        self.gridLayout_8.addWidget(self.btnLogClear, 0, 2, 1, 1)
         self.gridLayout_7.addWidget(self.frame_4, 0, 0, 1, 1)
         self.frame_5 = QtGui.QFrame(self.groupBox)
         self.frame_5.setFrameShape(QtGui.QFrame.Panel)
@@ -372,8 +375,9 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow", "Status: ", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblStatus.setText(QtGui.QApplication.translate("MainWindow", "None", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblStatus.setText(QtGui.QApplication.translate("MainWindow", "Log: ", None, QtGui.QApplication.UnicodeUTF8))
+        self.btnLogSave.setText(QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8))
+        self.btnLogClear.setText(QtGui.QApplication.translate("MainWindow", "Clear", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.menuTools.setTitle(QtGui.QApplication.translate("MainWindow", "Tools", None, QtGui.QApplication.UnicodeUTF8))
         self.menuAbout.setTitle(QtGui.QApplication.translate("MainWindow", "About", None, QtGui.QApplication.UnicodeUTF8))

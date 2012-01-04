@@ -24,6 +24,7 @@ class settings():
         self.mayabatchexefile="E:/adm/Maya2012/bin/mayabatch.exe"
         self.mayarenderexefile="E:/adm/Maya2012/bin/render.exe"
         self.renderLogsFolder= os.path.join(os.getcwd(),"renderlogs")
+        self.appLogsFolder= os.path.join(os.getcwd(),"applogs")
 
 
 class Configs(settings):

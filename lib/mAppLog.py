@@ -26,35 +26,35 @@ class AppLog():
 
     def __init__(self,parent=''):
         self._prn=lra.AppStart() if not parent else parent
-        self.timeStamp=False
-        self._prn.p
+        self.timeStamp=True
+
+    def ready(self):
+        data = "System Ready!"
+        t=self._prn.mUtil.getDateTime()
+        newData = '%s: %s' % (t,data) if self.timeStamp else data
+        self._prn.tbStatus.setText(newData)
 
     def disp(self, data=''):
         t=self._prn.mUtil.getDateTime()
-        if self.timeStamp:
-            d = '%s %s' + t
+        newData = '%s: %s' % (t,data) if self.timeStamp else data
+        oldData = str(self._prn.tbStatus.toPlainText())
+        finData = '%s\n%s' % (oldData,newData)
+        self._prn.tbStatus.setText(finData)
+        self._prn.qsup.scrollTextBox(self._prn.tbStatus)
 
     def clean(self):
-        lst = self.parent.rtaskSupport.getAllFlagNames()
-        items = self.parent.qlst.populate(self.parent.lstColumns,lst,False,True)
-        for eachItem in items:
-            self.parent.qsup.setIcon(eachItem, self.parent.mIcon.tag)
-
-    def doPrepareColumns(self):
-        itms = self.parent.qlst.getAllItem(self.parent.lstColumns)
-        for itm in itms:
-            txt = itm.text()
-            chk = itm.checkState()
-            cno = self.parent.qtbl.getHeaderColNo(self.parent.tblMainList, txt)
-            if chk:
-                self.parent.tblMainList.showColumn(cno)
-            else:
-                self.parent.tblMainList.hideColumn(cno)
-        self.parent.qtbl.resizeColumnsEx(self.parent.tblMainList)
-
-    def doSaveList(self):
-        pass
+        self.__saveLog()
+        self._prn.tbStatus.setText('')
+        self.ready()
 
 
+    def save(self):
+        name = self.__saveLog()
+        self._prn.qsup.showIformationBox(Message='%s saved!' % name)
 
+    def __saveLog(self):
+        fname = '%s.log' % (self._prn.mUtil.getDateTime('%Y%m%d%H%M'))
+        data = str(self._prn.tbStatus.toPlainText())
+        self._prn.mUtil.fileSaveAdv(self._prn.mApp.appLogsFolder, fname, data)
+        return fname
 
