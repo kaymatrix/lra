@@ -66,6 +66,7 @@ import mSettings
 import mRenderTask
 import mDatas
 import mAction
+import mAppLog
 import winSettingsInterface
 
 class AppStart(QtGui.QMainWindow, Ui_MainWindow):
@@ -84,6 +85,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qtbl = oplQtTable.oplQtTable(self)
         self.qlst = oplQtList.oplQtList(self)
         self.mUtil = oplPyUtilities.oplPyUtilities()
+        self.mLog = mAppLog.AppLog(self)
 
         self.winSetting = winSettingsInterface.winSettings(self)
 
@@ -103,6 +105,8 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
         #Defaults - Setup 3
         self.fin = mAction.FinalStage(self)
+        self.mLog.ready()
+
 
     def initalize(self):
         self.groupedWidgets = {
@@ -142,6 +146,9 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup.setIcon(self.btnSkipRender, self.mIcon.skip)
         self.qsup.setIcon(self.btnAddFile, self.mIcon.plus)
         self.qsup.setIcon(self.btnRemoveFile, self.mIcon.minus)
+
+        self.qsup.setIcon(self.btnLogSave, self.mIcon.save)
+        self.qsup.setIcon(self.btnLogClear, self.mIcon.new)
 
         self.qsup.setIcon(self.actionProperties, self.mIcon.properties)
         self.qsup.setIcon(self.actionRenderTasks, self.mIcon.rendertask)
@@ -188,6 +195,9 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
         self.qcon.sigConnect(self.btnAddFile, "clicked()", self.sigBtnActions)
         self.qcon.sigConnect(self.btnRemoveFile, "clicked()", self.sigBtnActions)
+
+        self.qcon.sigConnect(self.btnLogClear, "clicked()", self.sigBtnActions)
+        self.qcon.sigConnect(self.btnLogSave, "clicked()", self.sigBtnActions)
 
         self.qcon.sigConnect(self.tblMainList, "clicked(QModelIndex)", self.sigTblActions)
         self.qcon.sigConnect(self.tblMainList, "itemSelectionChanged ()", self.sigTblActions)
@@ -265,6 +275,10 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             self.doRTaskAddFile()
         if sender == self.btnRemoveFile:
             self.doRTaskDelete()
+        if sender == self.btnLogClear:
+            self.mLog.clean()
+        if sender == self.btnLogSave:
+            self.mLog.save()
         self.sigJammer(False)
 
     def sigWinClose(self, *arg):
@@ -284,6 +298,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
     def doRTaskNewList(self):
         self.qtbl.clear(self.tblMainList)
+        self.mLog.disp("Starting new list!")
 
     def doRTaskLoadList(self):
         f = self.qsup.getFileToOpen(FileName='list.lst',FileType='All Files (*);;List Files (*.lst)')
@@ -317,7 +332,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
                 col = self.qtbl.getHeaderColNo(self.tblMainList,columnName)
                 item = self.tblMainList.item(self.tblMainList.rowCount()-1, col)
                 if (item): item.setText(value)
-
+        self.mLog.disp("Loading list..." + f)
 
     def doRTaskSaveList(self):
         f = self.qsup.getFileToSave(FileName='list.lst',FileType='All Files (*);;List Files (*.lst)')
@@ -335,6 +350,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             for flag in rt.flags:
                 ini.setOption(rt.id, flag['flagFullName'], flag['value'])
         self.qsup.showIformationBox("lra","Current list saved, You can load it later!")
+        self.mLog.disp("Saving list..." + f)
 
     def doRTaskSelected(self):
         rtask = self._getSelectedRTask()
@@ -367,7 +383,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.btnStartRender.setEnabled(True)
         self.btnRTaskSave.setEnabled(True)
         self.actionSave_List.setEnabled(True)
-
+        self.mLog.disp("Task added to the list..." + rt.fileName)
         return rt
 
     def refreshStatus(self,rt):
@@ -379,7 +395,6 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
     def getRowOfID(self, id=-1):
         row = self.qtbl.findRow(self.tblMainList,str(id),True,[0])
         return row[0] if len(row) else -1
-
 
     def doRTaskUpdate(self):
         rtask = self._getSelectedRTask()
@@ -409,6 +424,8 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
                 item = self.tblMainList.item(row,col)
                 if (item): item.setText(value)
 
+            self.mLog.disp("Task updated..." + rtask.fileName)
+
     def doRTaskFlagPopulate(self, rtask=None):
         rt = mRenderTask.RenderTask('') if not rtask else rtask
         self.lePropFileName.setText(rt.fileName)
@@ -436,6 +453,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         rows = self.qtbl.getSelectedRowNo(self.tblMainList)
         if rows:
             for eachRow in rows: self.tblMainList.removeRow(eachRow)
+            self.mLog.disp("Task removed!")
 
     def doStatusUpdate(self, rtask, row):
         rtIcon = self.rtaskSupport.getIconForStatus(rtask.status)

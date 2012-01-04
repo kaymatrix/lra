@@ -38,6 +38,7 @@ class FinalStage():
 
 
     def GameOver(self):
+        self._prn.mLog.disp("Start render requested!")
         self._doBeforeGameBegins()
         self._chooseATaskStartTheGame()
         self._doAfterGameBegins()
@@ -46,6 +47,8 @@ class FinalStage():
         rt = mRenderTask.RenderTask('')
         rt = self._chooseWhichTaskToStartNow()
         if rt:
+            self._prn.mLog.disp("Render started for " + rt.id)
+
             #Got a task to render - Start the render
             self._doBeforeEnteringTheStage(rt)
 
@@ -63,10 +66,14 @@ class FinalStage():
                                 logDisplay = self._prn.tbLog
                                 )
 
+            self._prn.mLog.disp("Render progressing for " + rt.id)
             self._doAfterEnteringTheStage(rt)
+
         else:
             #Seems like all task are done - Close all activity
+            self._prn.mLog.disp("All Rendering completed!")
             self._doWonTheGameThenWhat()
+
 
     def _chooseWhichTaskToStartNow(self):
         rt = mRenderTask.RenderTask('')
@@ -90,6 +97,7 @@ class FinalStage():
 
         elif (not self.gameCtrl._terminate and not self.gameCtrl._terminateAll):
             #rt = mRenderTask.RenderTask('')
+            self._prn.mLog.disp("Current render completed, moving next!")
             self._prn.tbLog.setPlainText('')
             if rt.status == mrts.Rendering:
                 rt.status=mrts.RenderedWithNoError
@@ -97,6 +105,7 @@ class FinalStage():
             self._chooseATaskStartTheGame(rt)
 
         elif self.gameCtrl._terminate:
+            self._prn.mLog.disp("Terminating current render and moving next!")
             self._prn.tbLog.setPlainText('')
             if rt.status == mrts.Rendering:
                 rt.status=mrts.RenderCancelled
@@ -104,6 +113,7 @@ class FinalStage():
             self._chooseATaskStartTheGame(rt)
 
         elif self.gameCtrl._terminateAll:
+            self._prn.mLog.disp("Terminating all render task! Stopping Sytem!")
             #self._prn.tbLog.setText('')
             if rt.status == mrts.Rendering:
                 rt.status=mrts.RenderCancelled
@@ -143,6 +153,7 @@ class FinalStage():
         svFile = os.path.join(logPath,fileName)
         if os.path.exists(logPath):
             self._prn.mUtil.fileSave(data,svFile)
+        self._prn.mLog.disp("Render log saved to " + svFile)
 
     def __getFileName(self, rt):
         return '%s_%s.log' % (rt.id,rt.fileName)
