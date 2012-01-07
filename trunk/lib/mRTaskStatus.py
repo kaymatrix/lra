@@ -11,9 +11,9 @@
 #!/usr/bin/env python
 
 
-YetToStart=1
+Waiting=1
 Rendering=2
-RenderedWithNoError=3
+Completed=3
 RenderedWithError=4
-RenderCancelled=5
+Cancelled=5
 FileMissing=6

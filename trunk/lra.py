@@ -108,6 +108,8 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.mLog.ready()
 
 
+
+
     def initalize(self):
         self.groupedWidgets = {
                                 self.frmPropFrameRange:[
@@ -116,6 +118,31 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
                                                        ],
                                 self.frmPropProjPath:[
                                                         self.lePropProjPath
+                                                     ],
+                                self.frmPropFrameAttribs:[
+                                                        self.lePropByFrame,
+                                                        self.lePropPadding,
+                                                     ],
+                                self.frmPropRDPath:[
+                                                        self.lePropRDPath
+                                                     ],
+                                self.frmPropOutputFormat:[
+                                                        self.lePropOFPath
+                                                     ],
+                                self.frmPropCam:[
+                                                        self.lePropCamAlpha,
+                                                        self.lePropCamRGB,
+                                                        self.lePropCamDepth,
+                                                     ],
+                                self.frmPropResAbs:[
+                                                        self.lePropXRes,
+                                                        self.lePropYRes
+                                                     ],
+                                self.frmPropResPercentage:[
+                                                        self.lePropPercRes
+                                                     ],
+                                self.frmPropRenderLayer:[
+                                                        self.lePropRenderLayer
                                                      ]
                               }
         self.propWidgets = self.__allPropWidgets()
@@ -146,6 +173,13 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup.setIcon(self.btnSkipRender, self.mIcon.skip)
         self.qsup.setIcon(self.btnAddFile, self.mIcon.plus)
         self.qsup.setIcon(self.btnRemoveFile, self.mIcon.minus)
+
+        self.qsup.setIcon(self.btnSearchAppLog, self.mIcon.search)
+        self.qsup.setIcon(self.btnSearchRenderLog, self.mIcon.search)
+        self.qsup.setIcon(self.btnSearchRenderTask, self.mIcon.search)
+
+        self.qsup.setIcon(self.btnMoveUp, self.mIcon.up)
+        self.qsup.setIcon(self.btnMoveDown, self.mIcon.down)
 
         self.qsup.setIcon(self.btnLogSave, self.mIcon.save)
         self.qsup.setIcon(self.btnLogClear, self.mIcon.new)
@@ -187,11 +221,25 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         #Load Layout
         self.qsup.uiLayoutRestore()
 
+        #Columns Visibity Load
+        self.mData.doLoadColumns()
+
+        #Temp
+        self.leSearchAppLog.setVisible(0)
+        self.leSearchRenderLog.setVisible(0)
+        self.leSearchRenderTask.setVisible(0)
+        self.btnSearchAppLog.setVisible(0)
+        self.btnSearchRenderLog.setVisible(0)
+        self.btnSearchRenderTask.setVisible(0)
+
     def doConnections(self):
         self.qcon.sigConnect(self.btnStartRender, "clicked()", self.sigBtnActions)
         self.qcon.sigConnect(self.btnPropApply, "clicked()", self.sigBtnActions)
         self.qcon.sigConnect(self.btnRTaskLoad, "clicked()", self.sigBtnActions)
         self.qcon.sigConnect(self.btnRTaskSave, "clicked()", self.sigBtnActions)
+
+        self.qcon.sigConnect(self.btnMoveDown, "clicked()", self.sigBtnActions)
+        self.qcon.sigConnect(self.btnMoveUp, "clicked()", self.sigBtnActions)
 
         self.qcon.sigConnect(self.btnAddFile, "clicked()", self.sigBtnActions)
         self.qcon.sigConnect(self.btnRemoveFile, "clicked()", self.sigBtnActions)
@@ -275,6 +323,10 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             self.doRTaskAddFile()
         if sender == self.btnRemoveFile:
             self.doRTaskDelete()
+        if sender == self.btnMoveDown:
+            self.doRTaskMoveDown()
+        if sender == self.btnMoveUp:
+            self.doRTaskMoveUp()
         if sender == self.btnLogClear:
             self.mLog.clean()
         if sender == self.btnLogSave:
@@ -284,6 +336,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
     def sigWinClose(self, *arg):
         self.mApp.rtcounter=self.rtaskSupport.rcnt
         self.qsup.uiLayoutSave()
+        self.mData.doSaveColumns()
         self.mApp.saveSettings()
         self.mIcon.saveSettings()
 
@@ -303,18 +356,21 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
     def doRTaskLoadList(self):
         f = self.qsup.getFileToOpen(FileName='list.lst',FileType='All Files (*);;List Files (*.lst)')
         if not f: return
+        self.doRTaskNewList()
         ini = oplINIRW.INIRW(f,True)
         fileIds = ini.getSectionList()
-        self.doRTaskNewList()
+        self.tblMainList.setSortingEnabled(0)
         for fileId in fileIds:
             file = ini.getOption(fileId,'file')
             rt = mRenderTask.RenderTask()
             rt = self.doRTaskAdd(file)
             rt.status = int(ini.getOption(fileId,'status'))
             rt.addedOn = ini.getOption(fileId,'addedOn')
+            rt.completedOn = ini.getOption(fileId,'completedOn')
+            rt.customCommand  = ini.getOption(fileId,'customcommand')
             self.doStatusUpdate(rt,self.tblMainList.rowCount()-1)
             for eachFlag in ini.getOptionList(fileId):
-                if eachFlag <> 'status' and eachFlag <> 'addedon' and eachFlag <> 'file':
+                if eachFlag <> 'status' and eachFlag <> 'addedon' and eachFlag <> 'completedon' and eachFlag <> 'file':
                     dt={}
                     dt['flagFullName'] = eachFlag.title()
                     dt['flagShortName'] = self.rtaskSupport.getFlagShortNameForFlagFullName(dt['flagFullName'])
@@ -332,6 +388,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
                 col = self.qtbl.getHeaderColNo(self.tblMainList,columnName)
                 item = self.tblMainList.item(self.tblMainList.rowCount()-1, col)
                 if (item): item.setText(value)
+        self.tblMainList.setSortingEnabled(1)
         self.mLog.disp("Loading list..." + f)
 
     def doRTaskSaveList(self):
@@ -346,7 +403,9 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             ini.setSection(rt.id)
             ini.setOption(rt.id, 'file', rt.file)
             ini.setOption(rt.id, 'addedOn', rt.addedOn)
+            ini.setOption(rt.id, 'completedOn', rt.completedOn)
             ini.setOption(rt.id, 'status', rt.status)
+            ini.setOption(rt.id, 'customCommand', rt.customCommand)
             for flag in rt.flags:
                 ini.setOption(rt.id, flag['flagFullName'], flag['value'])
         self.qsup.showIformationBox("lra","Current list saved, You can load it later!")
@@ -358,7 +417,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             self.doRTaskFlagPopulate(rtask)
 
     def doRTaskAddFile(self):
-        file = self.qsup.getFileToOpen()
+        file = self.qsup.getFileToOpen('Select a file to add to render list...')
         if file:
             self.doRTaskAdd(file)
 
@@ -386,15 +445,15 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.mLog.disp("Task added to the list..." + rt.fileName)
         return rt
 
-    def refreshStatus(self,rt):
-        row = self.getRowOfID(rt.id)
-        if row>=0:
-            #self.doRTaskUpdate()
-            self.doStatusUpdate(rt,row)
+    def doRTaskMoveDown(self):
+        self.tblMainList.setSortingEnabled(0)
+        self.__rowSwapLogic("down")
+        self.tblMainList.setSortingEnabled(1)
 
-    def getRowOfID(self, id=-1):
-        row = self.qtbl.findRow(self.tblMainList,str(id),True,[0])
-        return row[0] if len(row) else -1
+    def doRTaskMoveUp(self):
+        self.tblMainList.setSortingEnabled(0)
+        self.__rowSwapLogic("up")
+        self.tblMainList.setSortingEnabled(1)
 
     def doRTaskUpdate(self):
         rtask = self._getSelectedRTask()
@@ -426,6 +485,8 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
             self.mLog.disp("Task updated..." + rtask.fileName)
 
+
+
     def doRTaskFlagPopulate(self, rtask=None):
         rt = mRenderTask.RenderTask('') if not rtask else rtask
         self.lePropFileName.setText(rt.fileName)
@@ -449,6 +510,14 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
                     parentWidget.setChecked(True)
                     self.qsup.setText(widget,value)
 
+        #Special Custom Command
+        if rtask.customCommand!='':
+            self.frmPropCustoms.setChecked(1)
+            self.lePropCustoms.setText(rtask.customCommand)
+        else:
+            self.frmPropCustoms.setChecked(0)
+            self.lePropCustoms.setText('')
+
     def doRTaskDelete(self):
         rows = self.qtbl.getSelectedRowNo(self.tblMainList)
         if rows:
@@ -461,17 +530,69 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup.setIcon(items[1],rtIcon)
         rtStatus = self.rtaskSupport.getStatusNameForStatus(rtask.status)
         items[1].setText(rtStatus)
+        items[4].setText(rtask.completedOn)
         self.qtbl.resizeColumnsEx(self.tblMainList)
 
     def doStartRender(self):
         self.fin.GameOver()
 
+
+
+    def __rowSwapLogic(self, mode="down"):
+        '''
+        mode can either "up" or "down"
+        '''
+        mode = mode.lower()
+
+        rows = self.qtbl.getSelectedRowNo(self.tblMainList)
+        minRowNo = 0
+        maxRowNo = self.tblMainList.rowCount()
+
+        if rows:
+            selRowNo = rows[0]
+            nxtRowNo = selRowNo - 1 if mode == "up" else selRowNo + 1
+
+            if ((mode == "up" and nxtRowNo != minRowNo-1) or
+                (mode == "down" and nxtRowNo != maxRowNo)) :
+
+                #Take Items have it hand
+                selItems = self.qtbl.takeRowItems(self.tblMainList, selRowNo)
+                nxtItems = self.qtbl.takeRowItems(self.tblMainList, nxtRowNo)
+
+                #Replacing new row:
+                for col, eachItem in enumerate(selItems):
+                    self.tblMainList.setItem(nxtRowNo, col, eachItem)
+
+                #Replacing old row:
+                for col, eachItem in enumerate(nxtItems):
+                    self.tblMainList.setItem(selRowNo, col, eachItem)
+
+                self.tblMainList.repaint()
+                self.tblMainList.selectRow(nxtRowNo)
+                #rtask = self.qtbl.getTag(items[0])
+                #rtask = self._getSelectedRTask()
+            else:
+                #We cant move beyond last row
+                pass
+        else:
+            #No row selected?
+            pass
+
+
+    def refreshStatus(self,rt):
+        row = self.getRowOfID(rt.id)
+        if row>=0:
+            #self.doRTaskUpdate()
+            self.doStatusUpdate(rt,row)
+
+    def getRowOfID(self, id=-1):
+        row = self.qtbl.findRow(self.tblMainList,str(id),True,[0])
+        return row[0] if len(row) else -1
     def _getSelectedRTask(self, all=False):
         ret = []
         rows = self.qtbl.getSelectedRowNo(self.tblMainList)
         if rows:
             if all:
-
                 for eachRow in rows:
                     items = self.qtbl.getRowItems(self.tblMainList, eachRow)
                     rtask = self.qtbl.getTag(items[0])

@@ -25,6 +25,7 @@ class settings():
         self.mayarenderexefile="E:/adm/Maya2012/bin/render.exe"
         self.renderLogsFolder= os.path.join(os.getcwd(),"renderlogs")
         self.appLogsFolder= os.path.join(os.getcwd(),"applogs")
+        self.colVis=""
 
 
 class Configs(settings):
