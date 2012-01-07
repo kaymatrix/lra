@@ -45,9 +45,18 @@ class Datas():
                 self.parent.tblMainList.hideColumn(cno)
         self.parent.qtbl.resizeColumnsEx(self.parent.tblMainList)
 
-    def doSaveList(self):
-        pass
+    def doSaveColumns(self):
+        lst = []
+        for i in xrange(0,self.parent.lstColumns.count()-1):
+            itm = self.parent.lstColumns.item(i)
+            if itm.checkState(): lst.append(str(itm.text()))
+        self.parent.mApp.colVis=','.join(lst)
 
-
-
+    def doLoadColumns(self):
+        vislst = self.parent.mApp.colVis.split(',')
+        for i in xrange(0,self.parent.lstColumns.count()-1):
+            itm = self.parent.lstColumns.item(i)
+            if itm.text() in vislst:
+                itm.setCheckState(QtCore.Qt.Checked)
+        self.doPrepareColumns()
 

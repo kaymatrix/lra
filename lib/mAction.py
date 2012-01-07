@@ -78,7 +78,7 @@ class FinalStage():
     def _chooseWhichTaskToStartNow(self):
         rt = mRenderTask.RenderTask('')
         for rtx in self._prn._getAllRTask():
-            if rtx.status == mrts.YetToStart:
+            if rtx.status == mrts.Waiting:
                 return rtx
         return None
 
@@ -100,7 +100,8 @@ class FinalStage():
             self._prn.mLog.disp("Current render completed, moving next!")
             self._prn.tbLog.setPlainText('')
             if rt.status == mrts.Rendering:
-                rt.status=mrts.RenderedWithNoError
+                rt.status=mrts.Completed
+                rt.completedOn=self._prn.mUtil.getDateTime()
                 self._prn.refreshStatus(rt)
             self._chooseATaskStartTheGame(rt)
 
@@ -108,7 +109,7 @@ class FinalStage():
             self._prn.mLog.disp("Terminating current render and moving next!")
             self._prn.tbLog.setPlainText('')
             if rt.status == mrts.Rendering:
-                rt.status=mrts.RenderCancelled
+                rt.status=mrts.Cancelled
                 self._prn.refreshStatus(rt)
             self._chooseATaskStartTheGame(rt)
 
@@ -116,7 +117,7 @@ class FinalStage():
             self._prn.mLog.disp("Terminating all render task! Stopping Sytem!")
             #self._prn.tbLog.setText('')
             if rt.status == mrts.Rendering:
-                rt.status=mrts.RenderCancelled
+                rt.status=mrts.Cancelled
                 self._prn.refreshStatus(rt)
             self._doWonTheGameThenWhat()
 
@@ -206,7 +207,7 @@ class Execution():
                                                 )
                 self.prc.execute()
                 print self._rt.id + " Started!"
-                if self._rt.status == mrts.YetToStart:
+                if self._rt.status == mrts.Waiting:
                     self._rt.status = mrts.Rendering
                     self._prn.refreshStatus(self._rt)
             else:
@@ -280,6 +281,10 @@ class RenderCommand():
         for f in rt.flags:
             fv = self._getFlagNVal(f)
             if fv: opt = opt + fv
+
+        if rt.customCommand:
+            opt = opt + '%s %s' % (opt, rt.customCommand)
+
         return (exe,opt,sfile)
 
     def _getFlagNVal(self, flags={}):

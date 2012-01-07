@@ -25,7 +25,7 @@ class RenderTask():
             self.fileName=os.path.basename(file)
             self.filePath=os.path.dirname(file)
             self.addedOn=self._muti.getDateTime()
-            self.status=mrts.YetToStart
+            self.status=mrts.Waiting
         else:
             self.file='-'
             self.fileName='-'
@@ -34,6 +34,7 @@ class RenderTask():
             self.status=mrts.FileMissing
 
         self.completedOn='-'
+        self.customCommand=''
 
         self.flags=[]
 
@@ -95,19 +96,19 @@ class RenderTaskSupport():
         if status==mrts.FileMissing:
             return self.mIcon.circleOrange
 
-        if status==mrts.RenderCancelled:
+        if status==mrts.Cancelled:
             return self.mIcon.circleWhite
 
         if status==mrts.RenderedWithError:
             return self.mIcon.circleGray
 
-        if status==mrts.RenderedWithNoError:
+        if status==mrts.Completed:
             return self.mIcon.circleBlack
 
         if status==mrts.Rendering:
             return self.mIcon.circleGreen
 
-        if status==mrts.YetToStart:
+        if status==mrts.Waiting:
             return self.mIcon.circleRed
 
     def getStatusNameForStatus(self,status):
@@ -119,6 +120,12 @@ class RenderTaskSupport():
     def rtaskUpdateFromUI(self, rtask=None, activeWidgets=[]):
         if rtask and activeWidgets:
             rtask.flags = self.getFlagValuesFromWidgets(activeWidgets)
+
+        if self.parent.frmPropCustoms.isChecked():
+            rtask.customCommand = self.parent.lePropCustoms.text()
+        else:
+            rtask.customCommand = ""
+
 
     def getFlagValuesFromWidgets(self, widgets=[]):
         '''

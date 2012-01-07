@@ -38,6 +38,9 @@ class Icons():
         self.skip = "/03/16/37.png"
         self.plus = "/03/16/03.png"
         self.minus = "/03/16/04.png"
+        self.down = "/03/16/07.png"
+        self.up = "/03/16/08.png"
+        self.search = "/01/16/49.png"
 
         self.circleRed = "/04/16/01.png"
         self.circleGreen = "/04/16/02.png"
