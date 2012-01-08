@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'F:\Kumaresan\Dev\Python\lra\uis\winMain.ui'
 #
-# Created: Sat Jan 07 10:02:05 2012
+# Created: Sun Jan 08 09:51:43 2012
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -215,7 +215,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName(_fromUtf8("scrollArea"))
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -376, 445, 774))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 568, 774))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self.gridLayout_6 = QtGui.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_6.setObjectName(_fromUtf8("gridLayout_6"))
@@ -547,6 +547,8 @@ class Ui_MainWindow(object):
         self.actionHelp.setObjectName(_fromUtf8("actionHelp"))
         self.actionTest = QtGui.QAction(MainWindow)
         self.actionTest.setObjectName(_fromUtf8("actionTest"))
+        self.actionReportIssues = QtGui.QAction(MainWindow)
+        self.actionReportIssues.setObjectName(_fromUtf8("actionReportIssues"))
         self.menuFile.addAction(self.actionNew_List)
         self.menuFile.addAction(self.actionLoad_List)
         self.menuFile.addAction(self.actionSave_List)
@@ -554,6 +556,8 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionQuit)
         self.menuTools.addAction(self.actionSettings)
         self.menuAbout.addAction(self.actionHelp)
+        self.menuAbout.addAction(self.actionReportIssues)
+        self.menuAbout.addSeparator()
         self.menuAbout.addAction(self.actionAbout_lra)
         self.menuView.addAction(self.actionRenderTasks)
         self.menuView.addAction(self.actionProperties)
@@ -702,4 +706,5 @@ class Ui_MainWindow(object):
         self.actionAbout_lra.setText(QtGui.QApplication.translate("MainWindow", "About lra", None, QtGui.QApplication.UnicodeUTF8))
         self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.actionTest.setText(QtGui.QApplication.translate("MainWindow", "test", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionReportIssues.setText(QtGui.QApplication.translate("MainWindow", "Report Issues", None, QtGui.QApplication.UnicodeUTF8))
 
