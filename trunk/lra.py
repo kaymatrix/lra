@@ -195,6 +195,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup.setIcon(self.actionQuit, self.mIcon.quit)
         self.qsup.setIcon(self.actionSettings, self.mIcon.settings)
         self.qsup.setIcon(self.actionHelp, self.mIcon.help)
+        self.qsup.setIcon(self.actionReportIssues, self.mIcon.redflag)
         self.qsup.setIcon(self.actionAbout_lra, self.mIcon.about)
 
         self.qtbl.initializing(self.tblMainList,self.rtaskCols)
@@ -256,6 +257,9 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qcon.sigConnect(self.actionSave_List, "triggered()", self.sigActions)
         self.qcon.sigConnect(self.actionQuit, "triggered()", self.sigActions)
         self.qcon.sigConnect(self.actionSettings, "triggered()", self.sigActions)
+        self.qcon.sigConnect(self.actionAbout_lra, "triggered()", self.sigActions)
+        self.qcon.sigConnect(self.actionHelp, "triggered()", self.sigActions)
+        self.qcon.sigConnect(self.actionReportIssues, "triggered()", self.sigActions)
 
         self.qcon.connectDockAndAction(self.dckLog, self.actionLog)
         self.qcon.connectDockAndAction(self.dckRenderTasks, self.actionRenderTasks)
@@ -279,9 +283,11 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         if sender is self.actionSettings:
             self.doShowSettings()
         if sender is self.actionHelp:
-            pass
+            self.mData.optHelp()
+        if sender is self.actionReportIssues:
+            self.mData.optIssues()
         if sender is self.actionAbout_lra:
-            pass
+            self.mData.optAbout()
 
     def sigLstActions(self, *arg):
         self.sigJammer()
@@ -446,14 +452,10 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         return rt
 
     def doRTaskMoveDown(self):
-        self.tblMainList.setSortingEnabled(0)
         self.__rowSwapLogic("down")
-        self.tblMainList.setSortingEnabled(1)
 
     def doRTaskMoveUp(self):
-        self.tblMainList.setSortingEnabled(0)
         self.__rowSwapLogic("up")
-        self.tblMainList.setSortingEnabled(1)
 
     def doRTaskUpdate(self):
         rtask = self._getSelectedRTask()
@@ -542,6 +544,8 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         '''
         mode can either "up" or "down"
         '''
+        self.tblMainList.blockSignals(1)
+        self.tblMainList.setSortingEnabled(0)
         mode = mode.lower()
 
         rows = self.qtbl.getSelectedRowNo(self.tblMainList)
@@ -567,7 +571,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
                 for col, eachItem in enumerate(nxtItems):
                     self.tblMainList.setItem(selRowNo, col, eachItem)
 
-                self.tblMainList.repaint()
+                #self.tblMainList.repaint()
                 self.tblMainList.selectRow(nxtRowNo)
                 #rtask = self.qtbl.getTag(items[0])
                 #rtask = self._getSelectedRTask()
@@ -577,7 +581,9 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         else:
             #No row selected?
             pass
-
+        self.tblMainList.repaint()
+        self.tblMainList.blockSignals(0)
+        self.tblMainList.setSortingEnabled(1)
 
     def refreshStatus(self,rt):
         row = self.getRowOfID(rt.id)

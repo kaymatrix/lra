@@ -22,10 +22,17 @@ import mSettings
 import mRenderTask
 import oplQtProcess
 
+import winAbout
+import webbrowser
+
+
+
 class Datas():
 
     def __init__(self,parent=''):
         self.parent=lra.AppStart() if not parent else parent
+        self.linkHelp = 'http://code.google.com/p/lra/wiki/UserDocument'
+        self.linkIssues = 'http://code.google.com/p/lra/issues/list'
 
     def doPopulateColumnsList(self):
         lst = self.parent.rtaskSupport.getAllFlagNames()
@@ -60,3 +67,14 @@ class Datas():
                 itm.setCheckState(QtCore.Qt.Checked)
         self.doPrepareColumns()
 
+    def optAbout(self):
+        self.widget = QtGui.QWidget()
+        win = winAbout.Ui_winAbout()
+        win.setupUi(self.widget)
+        self.widget.show()
+
+    def optHelp(self):
+        webbrowser.open(self.linkHelp)
+
+    def optIssues(self):
+        webbrowser.open(self.linkIssues)
