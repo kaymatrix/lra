@@ -11,7 +11,6 @@
 #!/usr/bin/env python
 from PyQt4 import QtCore, QtGui
 import oplPyUtilities
-import lra
 import oplQtSupport
 import oplQtConnection
 import oplQtTable
@@ -21,6 +20,8 @@ import mIcons
 import mSettings
 import mRenderTask
 import oplQtProcess
+if 0:
+    import lra
 
 class AppLog():
 
@@ -46,7 +47,6 @@ class AppLog():
         self.__saveLog()
         self._prn.tbStatus.setText('')
         self.ready()
-
 
     def save(self):
         name = self.__saveLog()

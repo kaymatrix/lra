@@ -70,7 +70,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Log: </string>
+             <string>Application Log: </string>
             </property>
            </widget>
           </item>
@@ -189,12 +189,15 @@
      <string>Tools</string>
     </property>
     <addaction name="actionSettings"/>
+    <addaction name="separator"/>
+    <addaction name="actionConsole"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
      <string>About</string>
     </property>
     <addaction name="actionHelp"/>
+    <addaction name="actionOnline_Help"/>
     <addaction name="actionReportIssues"/>
     <addaction name="separator"/>
     <addaction name="actionAbout_lra"/>
@@ -1412,6 +1415,16 @@
   <action name="actionReportIssues">
    <property name="text">
     <string>Report Issues</string>
+   </property>
+  </action>
+  <action name="actionOnline_Help">
+   <property name="text">
+    <string>Online Help</string>
+   </property>
+  </action>
+  <action name="actionConsole">
+   <property name="text">
+    <string>Console</string>
    </property>
   </action>
  </widget>
