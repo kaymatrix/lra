@@ -68,6 +68,7 @@ import mDatas
 import mAction
 import mAppLog
 import winSettingsInterface
+from consoleLib import console
 
 class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
@@ -78,6 +79,9 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         #Defaults - Setup 1
 
         #Initializes Variables/Objects
+        self.cons = console.Console()
+        self.printMessages()
+        print "Modules Initializing..."
         self.mApp = mSettings.Configs()
         self.mIcon = mIcons.Configs()
         self.qsup = oplQtSupport.oplQtSupport(self,self.mApp.iconPath)
@@ -86,7 +90,6 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qlst = oplQtList.oplQtList(self)
         self.mUtil = oplPyUtilities.oplPyUtilities()
         self.mLog = mAppLog.AppLog(self)
-
         self.winSetting = winSettingsInterface.winSettings(self)
 
         self.rtaskSupport=mRenderTask.RenderTaskSupport(self, self.mIcon)
@@ -106,11 +109,21 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         #Defaults - Setup 3
         self.fin = mAction.FinalStage(self)
         self.mLog.ready()
+        print "----------------------------------------------"
+        print "Everything ready.... Waiting for the next action!"
+        print "----------------------------------------------"
 
-
+    def printMessages(self):
+        print "Python System Console - Project LRA Initiated"
+        print "---------------------------------------------"
+        print "System Environment"
+        for key in os.environ:
+            print '%s: %s' % (key,os.environ[key])
+        print "Current Date Time: " + oplPyUtilities.oplPyUtilities().getDateTime()
 
 
     def initalize(self):
+        print "Variable Initializing...."
         self.groupedWidgets = {
                                 self.frmPropFrameRange:[
                                                         self.lePropStartFrame,
@@ -162,6 +175,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         return ret
 
     def doUIReDesigns(self):
+        print "UI Initializing..."
         self.setWindowTitle(self.mApp.name)
 
         self.qsup.setIcon(self,self.mIcon.app)
@@ -173,6 +187,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup.setIcon(self.btnSkipRender, self.mIcon.skip)
         self.qsup.setIcon(self.btnAddFile, self.mIcon.plus)
         self.qsup.setIcon(self.btnRemoveFile, self.mIcon.minus)
+
 
         self.qsup.setIcon(self.btnSearchAppLog, self.mIcon.search)
         self.qsup.setIcon(self.btnSearchRenderLog, self.mIcon.search)
@@ -197,6 +212,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qsup.setIcon(self.actionHelp, self.mIcon.help)
         self.qsup.setIcon(self.actionReportIssues, self.mIcon.redflag)
         self.qsup.setIcon(self.actionAbout_lra, self.mIcon.about)
+        self.qsup.setIcon(self.actionConsole, self.mIcon.tv)
 
         self.qtbl.initializing(self.tblMainList,self.rtaskCols)
         self.qtbl.formatting(self.tblMainList,sortingEnabled=True)
@@ -234,6 +250,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.btnSearchRenderTask.setVisible(0)
 
     def doConnections(self):
+        print "Connection Initializing..."
         self.qcon.sigConnect(self.btnStartRender, "clicked()", self.sigBtnActions)
         self.qcon.sigConnect(self.btnPropApply, "clicked()", self.sigBtnActions)
         self.qcon.sigConnect(self.btnRTaskLoad, "clicked()", self.sigBtnActions)
@@ -260,6 +277,8 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qcon.sigConnect(self.actionAbout_lra, "triggered()", self.sigActions)
         self.qcon.sigConnect(self.actionHelp, "triggered()", self.sigActions)
         self.qcon.sigConnect(self.actionReportIssues, "triggered()", self.sigActions)
+        self.qcon.sigConnect(self.actionOnline_Help, "triggered()", self.sigActions)
+        self.qcon.sigConnect(self.actionConsole, "triggered()", self.sigActions)
 
         self.qcon.connectDockAndAction(self.dckLog, self.actionLog)
         self.qcon.connectDockAndAction(self.dckRenderTasks, self.actionRenderTasks)
@@ -288,6 +307,10 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             self.mData.optIssues()
         if sender is self.actionAbout_lra:
             self.mData.optAbout()
+        if sender is self.actionOnline_Help:
+            self.mData.optOnlineHelp()
+        if sender is self.actionConsole:
+            self.mData.optConsoleShow()
 
     def sigLstActions(self, *arg):
         self.sigJammer()
@@ -340,11 +363,27 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.sigJammer(False)
 
     def sigWinClose(self, *arg):
+        print "Show is over... App Shutdown Initiated!"
+        print "Current time: " + self.mUtil.getDateTime()
+        print "Saving Counters..."
         self.mApp.rtcounter=self.rtaskSupport.rcnt
+        print "Saving layouts..."
         self.qsup.uiLayoutSave()
+        print "Saving columns..."
         self.mData.doSaveColumns()
+        print "Saving app settings..."
         self.mApp.saveSettings()
+        print "Saving icons..."
         self.mIcon.saveSettings()
+        print "Saving console log..."
+        print "Ta-Ta, Bye!"
+        self.consoleSave()
+
+    def consoleSave(self):
+        folder = self.mApp.consoleLogsFolder
+        fileName = "log_" + self.mUtil.getDateTime("%Y%m%d%H%M") + ".log"
+        data = self.cons.getData()
+        self.mUtil.fileSaveAdv(folder,fileName,data)
 
     def sigTblDragDrop(self, *arg):
         files = self.qcon.dropEventInfoEx(arg[0])
@@ -360,6 +399,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.mLog.disp("Starting new list!")
 
     def doRTaskLoadList(self):
+        print "Load RList!"
         f = self.qsup.getFileToOpen(FileName='list.lst',FileType='All Files (*);;List Files (*.lst)')
         if not f: return
         self.doRTaskNewList()
@@ -398,6 +438,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.mLog.disp("Loading list..." + f)
 
     def doRTaskSaveList(self):
+        print "Save RList!"
         f = self.qsup.getFileToSave(FileName='list.lst',FileType='All Files (*);;List Files (*.lst)')
         if not f: return
         rt = mRenderTask.RenderTask()
@@ -428,6 +469,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             self.doRTaskAdd(file)
 
     def doRTaskAdd(self, file):
+        print "Add RTask!"
         rt = mRenderTask.RenderTask(file)
         rtId = self.rtaskSupport.rcnt+1
         rt.id=str(rtId).zfill(4)
@@ -458,6 +500,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.__rowSwapLogic("up")
 
     def doRTaskUpdate(self):
+        print "Update RTask!"
         rtask = self._getSelectedRTask()
         rows = self.qtbl.getSelectedRowNo(self.tblMainList)
 
@@ -490,6 +533,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
 
 
     def doRTaskFlagPopulate(self, rtask=None):
+        print "Populate RTask Infos!"
         rt = mRenderTask.RenderTask('') if not rtask else rtask
         self.lePropFileName.setText(rt.fileName)
         self.lePropFilePath.setText(rt.filePath)
@@ -521,6 +565,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
             self.lePropCustoms.setText('')
 
     def doRTaskDelete(self):
+        print "Delete RTask!"
         rows = self.qtbl.getSelectedRowNo(self.tblMainList)
         if rows:
             for eachRow in rows: self.tblMainList.removeRow(eachRow)
@@ -536,14 +581,15 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
         self.qtbl.resizeColumnsEx(self.tblMainList)
 
     def doStartRender(self):
+        print "Start Render!"
         self.fin.GameOver()
-
-
+        print "After Start Render!"
 
     def __rowSwapLogic(self, mode="down"):
         '''
         mode can either "up" or "down"
         '''
+        print "RTask up/down!"
         self.tblMainList.blockSignals(1)
         self.tblMainList.setSortingEnabled(0)
         mode = mode.lower()
@@ -594,6 +640,7 @@ class AppStart(QtGui.QMainWindow, Ui_MainWindow):
     def getRowOfID(self, id=-1):
         row = self.qtbl.findRow(self.tblMainList,str(id),True,[0])
         return row[0] if len(row) else -1
+
     def _getSelectedRTask(self, all=False):
         ret = []
         rows = self.qtbl.getSelectedRowNo(self.tblMainList)

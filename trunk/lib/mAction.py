@@ -35,15 +35,18 @@ class FinalStage():
 
         self._mRender = RenderCommand(self._prn)
         self.gameCtrl=None
+        print "Render class Initialized"
 
 
     def GameOver(self):
+        print "RGame Starts!"
         self._prn.mLog.disp("Start render requested!")
         self._doBeforeGameBegins()
         self._chooseATaskStartTheGame()
         self._doAfterGameBegins()
 
     def _chooseATaskStartTheGame(self, arg=None):
+        print "Choose a task and begin render"
         rt = mRenderTask.RenderTask('')
         rt = self._chooseWhichTaskToStartNow()
         if rt:
@@ -76,6 +79,7 @@ class FinalStage():
 
 
     def _chooseWhichTaskToStartNow(self):
+        print "Checking - who is waiting next"
         rt = mRenderTask.RenderTask('')
         for rtx in self._prn._getAllRTask():
             if rtx.status == mrts.Waiting:
@@ -83,6 +87,7 @@ class FinalStage():
         return None
 
     def _doLevelCompleteGoNext(self, rt):
+        print "Some Render task done...Decide next action."
         #Job done, Go take the next job and do it.
 
         #Before that - Save the log

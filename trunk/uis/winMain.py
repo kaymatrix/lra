@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'F:\Kumaresan\Dev\Python\lra\uis\winMain.ui'
 #
-# Created: Sun Jan 08 09:51:43 2012
+# Created: Thu Jan 12 09:41:32 2012
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -549,13 +549,20 @@ class Ui_MainWindow(object):
         self.actionTest.setObjectName(_fromUtf8("actionTest"))
         self.actionReportIssues = QtGui.QAction(MainWindow)
         self.actionReportIssues.setObjectName(_fromUtf8("actionReportIssues"))
+        self.actionOnline_Help = QtGui.QAction(MainWindow)
+        self.actionOnline_Help.setObjectName(_fromUtf8("actionOnline_Help"))
+        self.actionConsole = QtGui.QAction(MainWindow)
+        self.actionConsole.setObjectName(_fromUtf8("actionConsole"))
         self.menuFile.addAction(self.actionNew_List)
         self.menuFile.addAction(self.actionLoad_List)
         self.menuFile.addAction(self.actionSave_List)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionQuit)
         self.menuTools.addAction(self.actionSettings)
+        self.menuTools.addSeparator()
+        self.menuTools.addAction(self.actionConsole)
         self.menuAbout.addAction(self.actionHelp)
+        self.menuAbout.addAction(self.actionOnline_Help)
         self.menuAbout.addAction(self.actionReportIssues)
         self.menuAbout.addSeparator()
         self.menuAbout.addAction(self.actionAbout_lra)
@@ -580,7 +587,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblStatus.setText(QtGui.QApplication.translate("MainWindow", "Log: ", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblStatus.setText(QtGui.QApplication.translate("MainWindow", "Application Log: ", None, QtGui.QApplication.UnicodeUTF8))
         self.btnLogSave.setToolTip(QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8))
         self.btnLogSave.setStatusTip(QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8))
         self.btnLogSave.setText(QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8))
@@ -707,4 +714,6 @@ class Ui_MainWindow(object):
         self.actionHelp.setText(QtGui.QApplication.translate("MainWindow", "Help", None, QtGui.QApplication.UnicodeUTF8))
         self.actionTest.setText(QtGui.QApplication.translate("MainWindow", "test", None, QtGui.QApplication.UnicodeUTF8))
         self.actionReportIssues.setText(QtGui.QApplication.translate("MainWindow", "Report Issues", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionOnline_Help.setText(QtGui.QApplication.translate("MainWindow", "Online Help", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionConsole.setText(QtGui.QApplication.translate("MainWindow", "Console", None, QtGui.QApplication.UnicodeUTF8))
 
